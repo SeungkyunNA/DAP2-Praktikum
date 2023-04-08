@@ -7,7 +7,6 @@ import java.time.Duration;
 
 class Quicksort2 {
 
-    static int counter = 0;
 
     public static void main(String[] args) {
 
@@ -36,28 +35,26 @@ class Quicksort2 {
         long time = Duration.between(start, finish).toMillis();
         System.out.println("Dual - Pivot Time: " + time);
 
-        assert(isSorted(result));
 
         if (result.length < 20) {
             System.out.println(Arrays.toString(result));
         }
 
+        assert(isSorted(result));
+
         double med = result[0] + result[result.length-1];
 
         System.out.println("Min : " + result[result.length-1] + ", Med : " + med/2 + ", Max : " + result[0]);
-        System.out.println("Count : " + counter);
         
     }
 
     public static int[] partition(int[] data , int l , int r) {
 
-
         // Pivot Austausch. Damit garantiert immer A[l] > A[r]
-        if (data[l]-data[r] < 0) {
+        if (data[l] < data[r]) {
             int save = data[l];
             data[l] = data[r];
             data[r] = save;
-
         }
 
         int pivotMax = data[l];
@@ -74,7 +71,7 @@ class Quicksort2 {
                 data[j] = data[i+1];
                 data[i+1] = data[i];
                 data[i] = save;
-
+                
                 i++;
                 j++;
 
@@ -86,10 +83,7 @@ class Quicksort2 {
 
             } else {
                 j++;
-
             }
-
-      
         }
         int[] result = {i, k};
         return result;
@@ -100,23 +94,21 @@ class Quicksort2 {
         // Abbruchkriterium
         if (l < r) {
             int[] a = partition(data , l , r);
-            counter++;
+            
             qsort(data , l , a[0]);         // Rekursion der linken Partition
             qsort(data , a[0]+1 , a[1]);    // Rekursion der mitten Partition
             qsort(data , a[1]+1 , r);       // Rekursion der rechten Partition
-        } 
-        
+        }
+
     }
 
     public static void qsort(int[] data) {
-        //System.out.println("First Call");
         qsort(data , 0 , data.length -1);
-        
     }
 
     public static boolean isSorted(int[] data) {
-        for (int i = 0 ; i < data.length -1 ; i++) {
-            if (data[i] < data[i+1]) {
+        for (int i = 1 ; i < data.length ; i++) {
+            if (data[i-1] < data[i]) {
                 return false;
             }
         }   

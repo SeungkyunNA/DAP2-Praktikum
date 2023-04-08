@@ -7,7 +7,6 @@ import java.time.Duration;
 
 class Quicksort {
 
-    static int counter = 0;
 
     public static void main(String[] args) {
 
@@ -39,20 +38,16 @@ class Quicksort {
         if (result.length < 20) {
             System.out.println(Arrays.toString(result));
         }
+        assert(isSorted(result));
 
         double med = result[0] + result[result.length-1];
 
         System.out.println("Min : " + result[result.length-1] + ", Med : " + med/2 + ", Max : " + result[0]);
-        System.out.println("Count : " + counter);
         
     }
 
 
     public static int partition(int[] data , int l , int r) {
-
-        if (l >= r) {
-            return -1;
-        } 
 
         int pivot = data[l];
         int i = l;
@@ -75,25 +70,38 @@ class Quicksort {
 
             } else {
                 j++;
+                while (j <= k && data[k] == pivot) {
+                    k--;
+                }
             }
         }
         return k;
     }
 
     public static void qsort(int[] data , int l , int r) {
-        
+
         if (l < r) {
             int a = partition(data , l , r);
-            counter++;
+        
             qsort(data , l , a);
             qsort(data , a+1 , r);
-        } 
+        }
+
     }
 
     public static void qsort(int[] data) {
 
         qsort(data , 0 , data.length -1);
         
+    }
+
+    public static boolean isSorted(int[] data) {
+        for (int i = 1 ; i < data.length ; i++) {
+            if (data[i-1] < data[i]) {
+                return false;
+            }
+        }   
+        return true;
     }
 
 
