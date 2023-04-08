@@ -73,13 +73,10 @@ class Quicksort2 {
         while(j <= k) {
             if (data[j] > pivotMax) {
                 // Zahlen größer als PivotMax verschieben sich nach links.
-                int save = data[i];
-                data[i] = data[j];
-                data[j] = save;
-                // Die ausgetauschte Zahl kehrt wieder an die Stelle von i + 1 zurück.
-                save = data[i+1];
-                data[i+1] = data[j];
-                data[j] = save;
+                int save = data[j];
+                data[j] = data[i+1];
+                data[i+1] = data[i];
+                data[i] = save;
 
                 i++;
                 j++;
