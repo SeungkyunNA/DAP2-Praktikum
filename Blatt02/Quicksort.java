@@ -43,6 +43,7 @@ class Quicksort {
         double med = result[0] + result[result.length-1];
 
         System.out.println("Min : " + result[result.length-1] + ", Med : " + med/2 + ", Max : " + result[0]);
+        System.out.println("Count : " + counter);
         
     }
 
@@ -65,18 +66,18 @@ class Quicksort {
                 data[j] = save;
                 i++;
                 j++;
-                System.out.println(counter + "]]]" +Arrays.toString(data));
+                //System.out.println(counter + "]]]" +Arrays.toString(data));
                 counter ++;
             } else if (data[j] < pivot) {
                 int save = data[j];
                 data[j] = data[k];
                 data[k] = save;
                 k--;
-                System.out.println(counter + "]]]" +Arrays.toString(data));
+                //System.out.println(counter + "]]]" +Arrays.toString(data));
                 counter ++;
             } else {
                 j++;
-                System.out.println(counter + "]]]" +Arrays.toString(data));
+                //System.out.println(counter + "]]]" +Arrays.toString(data));
                 counter ++;
             }
         }

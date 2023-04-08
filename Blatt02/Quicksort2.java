@@ -45,6 +45,7 @@ class Quicksort2 {
         double med = result[0] + result[result.length-1];
 
         System.out.println("Min : " + result[result.length-1] + ", Med : " + med/2 + ", Max : " + result[0]);
+        System.out.println("Count : " + counter);
         
     }
 
@@ -61,7 +62,7 @@ class Quicksort2 {
             int save = data[l];
             data[l] = data[r];
             data[r] = save;
-            System.out.println(counter + "]]]" +Arrays.toString(data));
+            //System.out.println(counter + "]]]" +Arrays.toString(data));
             counter ++;
         }
 
@@ -82,7 +83,7 @@ class Quicksort2 {
 
                 i++;
                 j++;
-                System.out.println(counter + "]]]" +Arrays.toString(data));
+                //System.out.println(counter + "]]]" +Arrays.toString(data));
                 //System.out.println("   i:" + i + ", j:" + j + ", k:" + k + " PiMax:" + pivotMax + ", PiMin:" + pivotMin);
                 counter++;
             } else if (data[j] < pivotMin) {
@@ -90,12 +91,12 @@ class Quicksort2 {
                 data[j] = data[k];
                 data[k] = save;
                 k--;
-                System.out.println(counter + "]]]" +Arrays.toString(data));
+                //System.out.println(counter + "]]]" +Arrays.toString(data));
                 counter++;
                 //System.out.println("   i:" + i + ", j:" + j + ", k:" + k + " PiMax:" + pivotMax + ", PiMin:" + pivotMin);
             } else {
                 j++;
-                System.out.println(counter + "]]]" +Arrays.toString(data));
+                //System.out.println(counter + "]]]" +Arrays.toString(data));
                 counter++;
                 //System.out.println("   i:" + i + ", j:" + j + ", k:" + k + " PiMax:" + pivotMax + ", PiMin:" + pivotMin);
             }
