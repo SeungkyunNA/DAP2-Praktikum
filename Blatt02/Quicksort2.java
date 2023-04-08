@@ -51,19 +51,13 @@ class Quicksort2 {
 
     public static int[] partition(int[] data , int l , int r) {
 
-        // Abbruchkriterium
-        if (l >= r) {
-            int[] result = {-1 , -1};
-            return result;
-        } 
 
         // Pivot Austausch. Damit garantiert immer A[l] > A[r]
         if (data[l]-data[r] < 0) {
             int save = data[l];
             data[l] = data[r];
             data[r] = save;
-            //System.out.println(counter + "]]]" +Arrays.toString(data));
-            counter ++;
+
         }
 
         int pivotMax = data[l];
@@ -83,22 +77,16 @@ class Quicksort2 {
 
                 i++;
                 j++;
-                //System.out.println(counter + "]]]" +Arrays.toString(data));
-                //System.out.println("   i:" + i + ", j:" + j + ", k:" + k + " PiMax:" + pivotMax + ", PiMin:" + pivotMin);
-                counter++;
+
             } else if (data[j] < pivotMin) {
                 int save = data[j];
                 data[j] = data[k];
                 data[k] = save;
                 k--;
-                //System.out.println(counter + "]]]" +Arrays.toString(data));
-                counter++;
-                //System.out.println("   i:" + i + ", j:" + j + ", k:" + k + " PiMax:" + pivotMax + ", PiMin:" + pivotMin);
+
             } else {
                 j++;
-                //System.out.println(counter + "]]]" +Arrays.toString(data));
-                counter++;
-                //System.out.println("   i:" + i + ", j:" + j + ", k:" + k + " PiMax:" + pivotMax + ", PiMin:" + pivotMin);
+
             }
 
       
@@ -109,13 +97,14 @@ class Quicksort2 {
 
     public static void qsort(int[] data , int l , int r) {
 
-        int[] a = partition(data , l , r);
-        if (a[0] != -1) {
-            //System.out.println("");
+        // Abbruchkriterium
+        if (l < r) {
+            int[] a = partition(data , l , r);
+            counter++;
             qsort(data , l , a[0]);         // Rekursion der linken Partition
             qsort(data , a[0]+1 , a[1]);    // Rekursion der mitten Partition
             qsort(data , a[1]+1 , r);       // Rekursion der rechten Partition
-        }
+        } 
         
     }
 

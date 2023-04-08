@@ -66,32 +66,28 @@ class Quicksort {
                 data[j] = save;
                 i++;
                 j++;
-                //System.out.println(counter + "]]]" +Arrays.toString(data));
-                counter ++;
+
             } else if (data[j] < pivot) {
                 int save = data[j];
                 data[j] = data[k];
                 data[k] = save;
                 k--;
-                //System.out.println(counter + "]]]" +Arrays.toString(data));
-                counter ++;
+
             } else {
                 j++;
-                //System.out.println(counter + "]]]" +Arrays.toString(data));
-                counter ++;
             }
         }
         return k;
     }
 
     public static void qsort(int[] data , int l , int r) {
-
-        int a = partition(data , l , r);
-        if (a != -1) {
+        
+        if (l < r) {
+            int a = partition(data , l , r);
+            counter++;
             qsort(data , l , a);
             qsort(data , a+1 , r);
-        }
-        
+        } 
     }
 
     public static void qsort(int[] data) {
