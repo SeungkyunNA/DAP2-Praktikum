@@ -7,6 +7,8 @@ import java.time.Duration;
 
 class Quicksort2 {
 
+    static int counter = 0;
+
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
@@ -15,7 +17,6 @@ class Quicksort2 {
         while (sc.hasNextLine()) {
             ls.add(Integer.parseInt(sc.nextLine()));
         }
-        System.out.println("Size = " + ls.size());
         sc.close();
 
         // Creating and copying an array as many as the number entered
@@ -60,7 +61,8 @@ class Quicksort2 {
             int save = data[l];
             data[l] = data[r];
             data[r] = save;
-            //System.out.println(Arrays.toString(data));
+            System.out.println(counter + "]]]" +Arrays.toString(data));
+            counter ++;
         }
 
         int pivotMax = data[l];
@@ -80,18 +82,21 @@ class Quicksort2 {
 
                 i++;
                 j++;
-                //System.out.print(Arrays.toString(data));
+                System.out.println(counter + "]]]" +Arrays.toString(data));
                 //System.out.println("   i:" + i + ", j:" + j + ", k:" + k + " PiMax:" + pivotMax + ", PiMin:" + pivotMin);
+                counter++;
             } else if (data[j] < pivotMin) {
                 int save = data[j];
                 data[j] = data[k];
                 data[k] = save;
                 k--;
-                //System.out.print(Arrays.toString(data));
+                System.out.println(counter + "]]]" +Arrays.toString(data));
+                counter++;
                 //System.out.println("   i:" + i + ", j:" + j + ", k:" + k + " PiMax:" + pivotMax + ", PiMin:" + pivotMin);
             } else {
                 j++;
-                //System.out.print(Arrays.toString(data));
+                System.out.println(counter + "]]]" +Arrays.toString(data));
+                counter++;
                 //System.out.println("   i:" + i + ", j:" + j + ", k:" + k + " PiMax:" + pivotMax + ", PiMin:" + pivotMin);
             }
 

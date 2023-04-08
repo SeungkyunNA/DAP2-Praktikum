@@ -7,6 +7,8 @@ import java.time.Duration;
 
 class Quicksort {
 
+    static int counter = 0;
+
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
@@ -32,7 +34,7 @@ class Quicksort {
         qsort(result);
         Instant finish = Instant.now();
         long time = Duration.between(start, finish).toMillis();
-        System.out.println("Dual - Pivot Time: " + time);
+        System.out.println("One Pivot Time: " + time);
 
         if (result.length < 20) {
             System.out.println(Arrays.toString(result));
@@ -63,13 +65,19 @@ class Quicksort {
                 data[j] = save;
                 i++;
                 j++;
+                System.out.println(counter + "]]]" +Arrays.toString(data));
+                counter ++;
             } else if (data[j] < pivot) {
                 int save = data[j];
                 data[j] = data[k];
                 data[k] = save;
                 k--;
+                System.out.println(counter + "]]]" +Arrays.toString(data));
+                counter ++;
             } else {
                 j++;
+                System.out.println(counter + "]]]" +Arrays.toString(data));
+                counter ++;
             }
         }
         return k;
