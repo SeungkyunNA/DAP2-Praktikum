@@ -14,7 +14,20 @@ class Quicksort {
         List<Integer> ls = new ArrayList<Integer>();
 
         while (sc.hasNextLine()) {
-            ls.add(Integer.parseInt(sc.nextLine()));
+            try {
+                String number = sc.nextLine();
+                /* Da auf MacOS durch den 'seq' Befehl erzeugte Zahlen ab einer 
+                   bestimmten Größe im Exponentialformat dargestellt werden, ist es erforderlich, 
+                   diese zuerst in einen 'double' zu konvertieren. */
+                double doubleValue = Double.parseDouble(number);
+                int integerValue = (int) doubleValue;
+                
+                ls.add(integerValue);
+            } catch (NumberFormatException e) {
+                System.err.println("Ungueltige Eingabe");
+                sc.close();
+                return;
+            }
         }
         sc.close();
 
@@ -29,69 +42,74 @@ class Quicksort {
             System.out.println(Arrays.toString(result));
         }
 
+        // Sort Start with Time measurement
         Instant start = Instant.now();
-        qsort(result);
+        
+        qSort(result);
+        
         Instant finish = Instant.now();
         long time = Duration.between(start, finish).toMillis();
-        System.out.println("One Pivot Time: " + time);
-
+        
         if (result.length < 20) {
             System.out.println(Arrays.toString(result));
         }
-        assert(isSorted(result));
+        assert(isSorted(result)); 
+        System.out.println("Single Pivot Time: " + time);
 
-        double med = result[0] + result[result.length-1];
-
-        System.out.println("Min : " + result[result.length-1] + ", Med : " + med/2 + ", Max : " + result[0]);
-        
+        if(result.length > 0) {
+            if (result.length % 2 == 1) {
+                int med = result[result.length/2];
+                System.out.println("Min : " + result[result.length-1] + ", Med : " + med + ", Max : " + result[0]);
+            } else {
+                double d = result[result.length/2 - 1] + result[result.length/2];
+                System.out.println("Min : " + result[result.length-1] + ", Med : " + d/2 + ", Max : " + result[0]);
+            }
+            
+        }
     }
-
 
     public static int partition(int[] data , int l , int r) {
 
         int pivot = data[l];
-        int i = l;
-        int j = l;
-        int k = r;
+        int pivot_pos = l;
+        int iterator = l + 1;
+        int right_area = r;
 
-        while(j <= k) {
-            if (data[j] > pivot) {
-                int save = data[i];
-                data[i] = data[j];
-                data[j] = save;
-                i++;
-                j++;
+        while(iterator <= right_area) {
+            if (data[iterator] > pivot) {
+                int save = data[pivot_pos];
+                data[pivot_pos] = data[iterator];
+                data[iterator] = save;
+                pivot_pos++;
+                iterator++;
 
-            } else if (data[j] < pivot) {
-                int save = data[j];
-                data[j] = data[k];
-                data[k] = save;
-                k--;
+            } else if (data[iterator] < pivot) {
+                int save = data[iterator];
+                data[iterator] = data[right_area];
+                data[right_area] = save;
+                right_area--;
 
             } else {
-                j++;
-                while (j <= k && data[k] == pivot) {
-                    k--;
-                }
+                iterator++;
             }
         }
-        return k;
+        return pivot_pos;
     }
 
-    public static void qsort(int[] data , int l , int r) {
+    public static void qSort(int[] data , int l , int r) {
 
         if (l < r) {
             int a = partition(data , l , r);
         
-            qsort(data , l , a);
-            qsort(data , a+1 , r);
+            qSort(data , l , a);
+            qSort(data , a+1 , r);
         }
 
     }
 
-    public static void qsort(int[] data) {
+    public static void qSort(int[] data) {
 
-        qsort(data , 0 , data.length -1);
+        qSort(data , 0 , data.length -1);
         
     }
 

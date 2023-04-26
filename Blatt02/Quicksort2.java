@@ -14,7 +14,20 @@ class Quicksort2 {
         List<Integer> ls = new ArrayList<Integer>();
 
         while (sc.hasNextLine()) {
-            ls.add(Integer.parseInt(sc.nextLine()));
+            try {
+                String number = sc.nextLine();
+                /* Da auf MacOS durch den 'seq' Befehl erzeugte Zahlen ab einer 
+                   bestimmten Größe im Exponentialformat dargestellt werden, ist es erforderlich, 
+                   diese zuerst in einen 'double' zu konvertieren. */
+                double doubleValue = Double.parseDouble(number);
+                int integerValue = (int) doubleValue;
+                
+                ls.add(integerValue);
+            } catch (NumberFormatException e) {
+                System.err.println("Ungueltige Eingabe");
+                sc.close();
+                return;
+            }
         }
         sc.close();
 
@@ -29,22 +42,29 @@ class Quicksort2 {
             System.out.println(Arrays.toString(result));
         }
 
+        // Sort Start with Time measurement
         Instant start = Instant.now();
-        qsort(result);
+        
+        qSort(result);
+        
         Instant finish = Instant.now();
         long time = Duration.between(start, finish).toMillis();
-        System.out.println("Dual - Pivot Time: " + time);
-
 
         if (result.length < 20) {
             System.out.println(Arrays.toString(result));
         }
-
         assert(isSorted(result));
+        System.out.println("Dual Pivot Time: " + time);
 
-        double med = result[0] + result[result.length-1];
-
-        System.out.println("Min : " + result[result.length-1] + ", Med : " + med/2 + ", Max : " + result[0]);
+        if(result.length > 0) {
+            if (result.length % 2 == 1) {
+                int med = result[result.length/2];
+                System.out.println("Min : " + result[result.length-1] + ", Med : " + med + ", Max : " + result[0]);
+            } else {
+                double d = result[result.length/2 - 1] + result[result.length/2];
+                System.out.println("Min : " + result[result.length-1] + ", Med : " + d/2 + ", Max : " + result[0]);
+            }
+        }
         
     }
 
@@ -60,50 +80,55 @@ class Quicksort2 {
         int pivotMax = data[l];
         int pivotMin = data[r];
    
-        int i = l;
-        int j = l;
-        int k = r;
+        int left_area = l;
+        int iterator = l + 1;
+        int right_area = r;
 
-        while(j <= k) {
-            if (data[j] > pivotMax) {
+        while(iterator <= right_area) {
+            if (data[iterator] > pivotMax) {
                 // Zahlen größer als PivotMax verschieben sich nach links.
-                int save = data[j];
-                data[j] = data[i+1];
-                data[i+1] = data[i];
-                data[i] = save;
+                // Die Zielnummer wird dabei mit der Zahl ausgetauscht, die sich direkt nach dem Pivot befindet. 
+                // Der Pivot bewegt sich nur um eine Position nach rechts.
+                int save = data[iterator];
+                data[iterator] = data[left_area+1];
+                data[left_area+1] = data[left_area];
+                data[left_area] = save;
                 
-                i++;
-                j++;
+                left_area++;
+                iterator++;
 
-            } else if (data[j] < pivotMin) {
-                int save = data[j];
-                data[j] = data[k];
-                data[k] = save;
-                k--;
+            } else if (data[iterator] < pivotMin) {
+                // Entsprechend wird der Austausch mit der Zahl durchgeführt, die sich direkt vor dem PivotMin befindet. 
+                // PivotMin bewegt sich nur um eine Position nach links.
+                int save = data[iterator];
+                data[iterator] = data[right_area-1];
+                data[right_area-1] = data[right_area];
+                data[right_area] = save;
+                right_area--;
 
             } else {
-                j++;
+                iterator++;
             }
         }
-        int[] result = {i, k};
+        int[] result = {left_area, right_area}; // Gibt die Positionen fuer beiden Pivots zurueck.
         return result;
     }
 
-    public static void qsort(int[] data , int l , int r) {
+    public static void qSort(int[] data , int l , int r) {
 
         // Abbruchkriterium
         if (l < r) {
             int[] a = partition(data , l , r);
             
-            qsort(data , l , a[0]);         // Rekursion der linken Partition
-            qsort(data , a[0]+1 , a[1]);    // Rekursion der mitten Partition
-            qsort(data , a[1]+1 , r);       // Rekursion der rechten Partition
+            qSort(data , l , a[0]);         // Rekursion der linken Partition
+            qSort(data , a[0]+1 , a[1]);    // Rekursion der mitten Partition
+            qSort(data , a[1]+1 , r);       // Rekursion der rechten Partition
         }
 
     }
 
-    public static void qsort(int[] data) {
-        qsort(data , 0 , data.length -1);
+    public static void qSort(int[] data) {
+        qSort(data , 0 , data.length -1);
     }
 
     public static boolean isSorted(int[] data) {
