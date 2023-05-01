@@ -7,7 +7,7 @@ public class AufgabeB3A1{
         int[] result;
         try{
             result = readStandardIn();
-        } catch (NumberFormatException e){  // Fehlerbehandlung : wenn ungültige Eingabe gegeben wird. (z.B. "a" , " " ...)
+        } catch (NumberFormatException e){  // Fehlerbehandlung : wenn ungueltige Eingabe gegeben wird. (z.B. "a" , " " ...)
             System.err.println("ERROR: Input is not valid."); 
             return;
         }
@@ -20,7 +20,7 @@ public class AufgabeB3A1{
 
         try {
             k = Integer.parseInt(args[0]);
-        } catch (NumberFormatException e) { // Fehlerbehandlung : wenn k nicht eine Natürliche Zahl ist. ("1,1" , "a")
+        } catch (NumberFormatException e) { // Fehlerbehandlung : wenn k nicht eine Natuerliche Zahl ist. ("1,1" , "a")
             System.err.println("ERROR: The argument for subsetsize must be one natural number.");
             return;
         }
@@ -30,7 +30,7 @@ public class AufgabeB3A1{
             return;
         }
 
-        if(k == 0) {    // Early Return : Es gibt immmer ein leere Array mit 1 Möglichkeit wenn k = 0 ist.
+        if(k == 0) {    // Early Return : Es gibt immmer ein leere Array mit 1 Moeglichkeit wenn k = 0 ist.
             int [] err = new int [0];
             System.out.println(err);
             System.out.println("There are 1 subsets");
@@ -61,7 +61,7 @@ public class AufgabeB3A1{
     }
     public static int[] readStandardIn() throws NumberFormatException {
 
-        /* Prinzipiel ist aus Übung. (dynamische Eingabespeicherung mit statische Datenstructur.) */
+        /* Prinzipiel ist aus uebung. (dynamische Eingabespeicherung mit statische Datenstructur.) */
 
         Scanner sc = new Scanner(System.in);
         
@@ -69,14 +69,14 @@ public class AufgabeB3A1{
         int i = 0;
         while(sc.hasNextLine()) {
             
-            int target = Integer.parseInt(sc.nextLine());   // Fehlerbehandlung unnötig. Es wird in Main() abgefangen.
+            int target = Integer.parseInt(sc.nextLine());   // Fehlerbehandlung unnoetig. Es wird in Main() abgefangen.
             if (i < a.length) {
                 a[i] = target;
                 i++;
             } else {
                 int[] aa = new int[a.length*2];
                 for (int p=0;p<a.length;p++){
-                    aa[p]=a[p];                 //  Array a ist nicht genug für Eingabelänge, erzeugen wir doppel Größe Array a*
+                    aa[p]=a[p];                 //  Array a ist nicht genug fuer Eingabelaenge, erzeugen wir doppel Groesse Array a*
                 }
                 a = aa;
                 a[i] = target;
@@ -85,7 +85,7 @@ public class AufgabeB3A1{
         }
 
         int[] result = new int[i];
-        for(int n=0;n<result.length;n++){           //  schneiden wir genau bis Eingabelänge ab, um keine NULLs dran enthalten zu können.
+        for(int n=0;n<result.length;n++){           //  schneiden wir genau bis Eingabelaenge ab, um keine NULLs dran enthalten zu koennen.
             result[n]=a[n];
         }
 
@@ -105,7 +105,7 @@ public class AufgabeB3A1{
             return null;
         }
 
-        /* Wir wissen schon die Länge der Eingabe (n) und Größe der Teilmenge (k). Daher können wir rechnen, wie groß die Ergebnis-Array sein muss */
+        /* Wir wissen schon die Laenge der Eingabe (n) und Groesse der Teilmenge (k). Daher koennen wir rechnen, wie gross die Ergebnis-Array sein muss */
         int amountSetUp = calFac(data.length);
         int amountSetDown = (calFac(data.length-subsetSize)*calFac(subsetSize)); // Anzahl der Teilmenge
         int amountSet;
@@ -115,7 +115,7 @@ public class AufgabeB3A1{
             return null;
         }
 
-        int[][] result = new int[amountSet][subsetSize]; // durch Binomialkoeffizientrechnung können wir vorher festlegen, wie groß es ist.
+        int[][] result = new int[amountSet][subsetSize]; // durch Binomialkoeffizientrechnung koennen wir vorher festlegen, wie gross es ist.
         
         int[] ptr = new int [subsetSize];
 
@@ -153,7 +153,7 @@ public class AufgabeB3A1{
     
     public int[] removeDuplicates(int[] data) {
         boolean[] marker = new boolean[data.length]; // Position der Doppelte Zahl zu markieren. true := diese Position ist schon gelegt.
-        int counter = data.length;                   // um zu zählen, wie viele Zahlen werden hingelegt. wenn irgendeine Position true setzt, verringert counter um 1.
+        int counter = data.length;                   // um zu zaehlen, wie viele Zahlen werden hingelegt. wenn irgendeine Position true setzt, verringert counter um 1.
         for(int i=0;i<data.length;i++){
             if(!marker[i]) {                         // Falls jetztige Position nicht true ist, beduetet data[i] ist noch nicht belegt. 
                 int target = data[i];
@@ -165,15 +165,15 @@ public class AufgabeB3A1{
                 }
             }
         }
-        int[] result = new int[counter];            // insgesamt haben wir 'counter' Zahlen, die zurückgegeben werden müssen.
-        int it1 = 0;      // Iterator für result[]
-        int it2 = 0;      // Iterator für data[] und marker[].
+        int[] result = new int[counter];            // insgesamt haben wir 'counter' Zahlen, die zurueckgegeben werden muessen.
+        int it1 = 0;      // Iterator fuer result[]
+        int it2 = 0;      // Iterator fuer data[] und marker[].
         while(it1<counter){
             if(marker[it2] == false){
                 result[it1] = data[it2];
                 it1++;
                 it2++;
-            } else {    // Falls marker[it2] == true ist, fügen wir nicht hin und einfach it2 um 1 erhöhen.
+            } else {    // Falls marker[it2] == true ist, fuegen wir nicht hin und einfach it2 um 1 erhoehen.
                 it2++;
             }
         }
@@ -181,7 +181,7 @@ public class AufgabeB3A1{
         return result;
     }
 
-    /* Hilfsfunktion. gibt n! zurück */
+    /* Hilfsfunktion. gibt n! zurueck */
     public int calFac(int n) {
         if(n == 0) {
             return 1;
@@ -194,9 +194,9 @@ public class AufgabeB3A1{
 
     }
 
-    /* Hilfsfunktion. Pointers werden in richtigen Form zurücksetzen.
+    /* Hilfsfunktion. Pointers werden in richtigen Form zuruecksetzen.
     
-    wenn das 0te Pointer großer als die Länge der Data wird, setzet die Pointers in richtige Form. 
+    wenn das 0te Pointer grosser als die Laenge der Data wird, setzet die Pointers in richtige Form. 
     
     Bsp1) Mit data.length = 5 , [5,2,1] -> [4,3,1] 
     Bsp2) Mit data.length = 5 , [5,4,1] -> [4,3,2] 

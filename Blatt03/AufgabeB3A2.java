@@ -7,7 +7,7 @@ public class AufgabeB3A2 {
       int[] result;
       try{
          result = readStandardIn();
-      } catch (NumberFormatException e){  // Fehlerbehandlung : wenn ungültige Eingabe gegeben wird. (z.B. "a" , " " ...)
+      } catch (NumberFormatException e){  // Fehlerbehandlung : wenn ungueltige Eingabe gegeben wird. (z.B. "a" , " " ...)
          System.err.println("ERROR: Input is not valid."); 
          return;
       }
@@ -38,7 +38,7 @@ public class AufgabeB3A2 {
                return;
             }
          }
-      } catch (NumberFormatException e) { // Fehlerbehandlung : wenn k nicht eine Natürliche Zahl ist. ("1.1" , "1 2 a")
+      } catch (NumberFormatException e) { // Fehlerbehandlung : wenn k nicht eine Natuerliche Zahl ist. ("1.1" , "1 2 a")
          System.err.println("ERROR: The arguments must be natural number.");
          return;
       }
@@ -60,7 +60,7 @@ public class AufgabeB3A2 {
 
    public static int[] readStandardIn() throws NumberFormatException {
 
-      /* Prinzipiel ist aus Übung. (dynamische Eingabespeicherung mit statische Datenstructur.) */
+      /* Prinzipiel ist aus uebung. (dynamische Eingabespeicherung mit statische Datenstructur.) */
 
       Scanner sc = new Scanner(System.in);
       
@@ -69,14 +69,14 @@ public class AufgabeB3A2 {
       while(sc.hasNextLine()) {
          
          double doubleValue = Double.parseDouble(sc.nextLine());
-         int target = (int) doubleValue;  // Fehlerbehandlung unnötig. Es wird in Main() abgefangen.
+         int target = (int) doubleValue;  // Fehlerbehandlung unnoetig. Es wird in Main() abgefangen.
          if (i < a.length) {
             a[i] = target;
             i++;
          } else {
             int[] aa = new int[a.length*2];
             for (int p=0;p<a.length;p++){
-                  aa[p]=a[p];                 //  Array a ist nicht genug für Eingabelänge, erzeugen wir doppel Größe Array a*
+                  aa[p]=a[p];                 //  Array a ist nicht genug fuer Eingabelaenge, erzeugen wir doppel Groesse Array a*
             }
             a = aa;
             a[i] = target;
@@ -85,7 +85,7 @@ public class AufgabeB3A2 {
       }
 
       int[] result = new int[i];
-      for(int n=0;n<result.length;n++){           //  schneiden wir genau bis Eingabelänge ab, um keine NULLs dran enthalten zu können.
+      for(int n=0;n<result.length;n++){           //  schneiden wir genau bis Eingabelaenge ab, um keine NULLs dran enthalten zu koennen.
          result[n]=a[n];
       }
 
@@ -140,7 +140,7 @@ public class AufgabeB3A2 {
       qSort(data , 0 , data.length -1);
       
    }
-   /* Hilfsfunktion Injektion für Duplikation.*/
+   /* Hilfsfunktion Injektion fuer Duplikation.*/
    public static boolean hasDuplicate(int[] data) {
       for (int i = 1 ; i < data.length ; i++) {
           if (data[i-1] == data[i]) {
@@ -150,7 +150,7 @@ public class AufgabeB3A2 {
       return false;
   }
 
-  /* Hilfsfunktion. gibt n! zurück */
+  /* Hilfsfunktion. gibt n! zurueck */
   public static int calFac(int n) {
    if(n == 0) {
        return 1;
@@ -172,7 +172,7 @@ public class AufgabeB3A2 {
       if (kSmallest <= 0) {
          return null;
       }
-      int kSmall = kSmallest-1; // Berücksichrigen für Index. (17te kleintes Zahl steht 16te Index.)
+      int kSmall = kSmallest-1; // Beruecksichrigen fuer Index. (17te kleintes Zahl steht 16te Index.)
       int[] temp = new int[data.length];
       int[] copy = Arrays.copyOf(data , data.length);
 
