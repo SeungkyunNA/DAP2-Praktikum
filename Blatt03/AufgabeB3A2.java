@@ -11,8 +11,11 @@ public class AufgabeB3A2 {
          System.err.println("ERROR: Input is not valid."); 
          return;
       }
+      
+      System.out.println("Int[] Origin : " + Arrays.toString(result));
 
       qSort(result);
+
 
       if(hasDuplicate(result)){  // Fehlerbehandlung : Duplikation.
          System.err.println(("Error: Duplicate entries in input"));
@@ -43,6 +46,8 @@ public class AufgabeB3A2 {
          return;
       }
 
+      System.out.println("Anfrage K : " + Arrays.toString(ki));
+      System.out.println("-------------------------------------------------------------------------");
       System.out.println("Sorted input :");
       System.out.println(Arrays.toString(result));
 
@@ -66,9 +71,14 @@ public class AufgabeB3A2 {
       
       int[] a = new int[1];
       int i = 0;
+      System.out.println("-------------------------------------------------------------------------");
+      System.out.print("Input Origin : [");
       while(sc.hasNextLine()) {
+
+         String s = sc.nextLine();
+         System.out.print(s + ",");
          
-         double doubleValue = Double.parseDouble(sc.nextLine());
+         double doubleValue = Double.parseDouble(s);
          int target = (int) doubleValue;  // Fehlerbehandlung unnoetig. Es wird in Main() abgefangen.
          if (i < a.length) {
             a[i] = target;
@@ -83,6 +93,8 @@ public class AufgabeB3A2 {
             i++;
          }
       }
+      System.out.print("]");
+      System.out.println();
 
       int[] result = new int[i];
       for(int n=0;n<result.length;n++){           //  schneiden wir genau bis Eingabelaenge ab, um keine NULLs dran enthalten zu koennen.
