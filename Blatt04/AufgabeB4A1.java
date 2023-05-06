@@ -143,9 +143,9 @@ public class AufgabeB4A1 {
             if (left == data.length) {
                 return true;
             } else if (right == data.length) {
-                return data[current] < data[left];
+                return data[current] >= data[left];
             } else {
-                if (data[current] > data[left] || data[current] > data[right]) {
+                if (data[current] < data[left] || data[current] < data[right]) {
                     return false;
                 }
             }

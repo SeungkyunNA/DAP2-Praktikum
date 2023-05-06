@@ -44,7 +44,7 @@ public class MaxHeap {
         int i = size - 1;
         int p = i/2;
         while(p >= 0){
-            /* Vertauschen, wenn 'parent node' kleiner als neues 'value' ist. */
+            /* Vertauschen, wenn 'parent node' großer als neues 'value' ist. */
             if (heap[p] < heap[i]) {
                 int temp = heap[p];
                 heap[p] = heap[i];
