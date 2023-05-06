@@ -38,9 +38,24 @@ public class AufgabeB4A1 {
         /* BuildMaxHeap */
         MaxHeap heap = new MaxHeap(input.length);
         heap.addAll(input);
-        System.out.print("add :");
-        System.out.println(Arrays.toString(heap.getValues()));
 
+        // int kCounter = 1;
+
+        // for(int i = (input.length-1 / 2) ; i > 0 ; i --) {
+        //     System.out.println("Befor MH : "+ Arrays.toString(heap.getValues()));
+        //     heap.maxHeapify(i);
+        //     System.out.println("After MH : "+ Arrays.toString(heap.getValues()));
+
+        //     int temp = heap.heap[0];
+        //     heap.heap[0] = heap.heap[input.length-kCounter ];
+        //     heap.heap[input.length-kCounter] = temp;
+        //     kCounter++;
+
+        //     
+            
+        // }
+        
+        System.out.println("Add : "+ Arrays.toString(heap.getValues()));
         /* Test for Add , Extract , Peek, Extact and Add */
 
         // System.out.print("PeekMax :");
@@ -128,9 +143,9 @@ public class AufgabeB4A1 {
             if (left == data.length) {
                 return true;
             } else if (right == data.length) {
-                return data[current] >= data[left];
+                return data[current] < data[left];
             } else {
-                if (data[current] < data[left] || data[current] < data[right]) {
+                if (data[current] > data[left] || data[current] > data[right]) {
                     return false;
                 }
             }

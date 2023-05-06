@@ -109,7 +109,7 @@ public class MaxHeap {
             return;
         } else if (right >= size) { /* Falls nur left child existiert */
 
-            if (heap[left] > heap[i]){
+            if (heap[left] < heap[i]){
                 /* Swap i <> left */
                 int temp = heap[left];
                 heap[left] = heap[i];
@@ -127,12 +127,15 @@ public class MaxHeap {
                 bigger = right;
             }
 
-            /* Swap i <> bigger */
-            int temp = heap[bigger];
-            heap[bigger] = heap[i];
-            heap[i] = temp;
+            if (heap[bigger] < heap[i]){
+                /* Swap i <> bigger */
+                int temp = heap[bigger];
+                heap[bigger] = heap[i];
+                heap[i] = temp;
 
-            maxHeapify(bigger);
+                maxHeapify(bigger);
+            }
+            
         }
         return;
     }
