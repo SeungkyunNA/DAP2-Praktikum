@@ -1,4 +1,4 @@
-import java.util.Arrays;
+
 
 public class MaxHeap {
 
@@ -7,14 +7,14 @@ public class MaxHeap {
     int[] heap;
 
     public MaxHeap(int capacity) {
-        this.capacity = capacity;
-        this.size = -1;
+        this.capacity = capacity; // Index wird 0 bis c-1 
+        this.size = 0;           // Index wird 0 bis s-1 
         heap = new int[capacity];
     }
 
     /* gibt 'size' zurück */
     public int getSize() {
-        return size+1;
+        return size;
     }
     /* gibt 'capacity' zurück */
     public int getCapacity() {
@@ -33,35 +33,35 @@ public class MaxHeap {
 
         size++;
         
-
         /* es wird Exception geworfen wenn 'size' gleich 'capcity' ist. (Heap ist schon voll) */
-        if (size == capacity) {
+        if (size == capacity+1) {
             throw new IllegalStateException();
         }
 
         /* Speiche 'value' erst im neuen 'Leaf node' */
-        heap[size] = value;
+        heap[size-1] = value;
         
-        int i = size;
+        int i = size - 1;
         int p = i/2;
-        while(p > 0){
+        while(p >= 0){
             /* Vertauschen, wenn 'parent node' kleiner als neues 'value' ist. */
-            if (heap[p] < heap[size]) {
+            if (heap[p] < heap[i]) {
                 int temp = heap[p];
-                heap[p] = heap[size];
-                heap[size] = temp;
+                heap[p] = heap[i];
+                heap[i] = temp;
 
                 i = p; /* führe weiter aus */
+                /* Setze p an der position des 'Parent node' */
+                p = i/2; 
+            } else {
+                break;
             }
-            
-            /* Setze p an der position des 'Parent node' */
-            p = i/2; 
         }
 
     }
     
     /* Hilfsfunktion. um zu ermöglichen, dass ein Array direkt im Heap speichern */
-    public void add(int[] values) {
+    public void addAll(int[] values) {
         for (int v : values){
             add(v);
         }
@@ -69,19 +69,19 @@ public class MaxHeap {
     
     public int extractMax() throws IllegalStateException {
         /* es wird Exception geworfen wenn size gleich 0 ist. (Es gibt kein Knote in Heap) */
-        if (size == -1) {
-            throw new IllegalStateException();
+        if (size == 0) {
+            throw new IllegalStateException("Heap is empty. cannot extract");
         }
 
         /* Wenn im Heap nur ein node speichert, gibt sofort zurück */
-        if (size == 0) {
+        if (size == 1) {
             size--;
             return heap[0];    
         }
         
         /*  Speichere A[0](aktuelle Maxvalue) und setze in A[0] value von A[size](last Node).*/
         int result = heap[0];
-        heap[0] = heap[size];
+        heap[0] = heap[size-1];
         size--; // Da extrahieren soll, 'size' wird um 1 verringert.
         
         maxHeapify(0);
@@ -101,13 +101,13 @@ public class MaxHeap {
     public void maxHeapify(int i) {
         
         /* setze positionen von Parent node  */
-        int left = 2*i;
-        int right = (2*i) + 1;
+        int left = (2*i) + 1;
+        int right = (2*i) + 2;
 
         
-        if (left > size) { /* Falls A[i] ein Blatt ist */
+        if (left >= size) { /* Falls A[i] ein Blatt ist */
             return;
-        } else if (right > size) { /* Falls nur left child existiert */
+        } else if (right >= size) { /* Falls nur left child existiert */
 
             if (heap[left] > heap[i]){
                 /* Swap i <> left */

@@ -37,16 +37,37 @@ public class AufgabeB4A1 {
     
         /* BuildMaxHeap */
         MaxHeap heap = new MaxHeap(input.length);
-        heap.add(input);
-        int[] result = heap.getValues();
+        heap.addAll(input);
+        System.out.print("add :");
+        System.out.println(Arrays.toString(heap.getValues()));
 
-        System.out.println(Arrays.toString(result));
+        /* Test for Add , Extract , Peek, Extact and Add */
+
+        // System.out.print("PeekMax :");
+        // int exMax = heap.peekMax();
+        // System.out.println("Max : " + exMax +" Rest : " +  Arrays.toString(heap.getValues()));
+        
+
+        // for(int i = 0 ; i < 2 ; i ++) {
+        //     System.out.print("exMax :");
+        //     exMax = heap.extractMax();
+        //     System.out.println("Max : " + exMax +" Rest : " +  Arrays.toString(heap.getValues()));
+        // }
+        
+        // heap.add(500);
+        // heap.add(-245);
+        // System.out.print("add 500 and -245 :");
+        // System.out.println(Arrays.toString(heap.getValues()));
+
+
+        assert(isHeap(heap.getValues()));
 
         /* Ausgabe */
         //System.out.println(heapSelect(result, k));
         //System.out.println(heapSelectFast(result, k));
 
     }
+
     public static int heapSelect(int[] arr, int k) {
 
         return 0;
@@ -95,6 +116,26 @@ public class AufgabeB4A1 {
         sc.close();
         return result;
   
+     }
+
+     private static boolean isHeap(int[] data) {
+
+        for (int i = 0 ; i < data.length ; i ++) {
+            int current = i;
+            int left = (current*2) + 1;
+            int right = (current*2) + 2;
+
+            if (left == data.length) {
+                return true;
+            } else if (right == data.length) {
+                return data[current] >= data[left];
+            } else {
+                if (data[current] < data[left] || data[current] < data[right]) {
+                    return false;
+                }
+            }
+        }
+        return true;
      }
 }
 
