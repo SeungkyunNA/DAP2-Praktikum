@@ -38,24 +38,7 @@ public class AufgabeB4A1 {
         /* BuildMaxHeap */
         MaxHeap heap = new MaxHeap(input.length);
         heap.addAll(input);
-
-        // int kCounter = 1;
-
-        // for(int i = (input.length-1 / 2) ; i > 0 ; i --) {
-        //     System.out.println("Befor MH : "+ Arrays.toString(heap.getValues()));
-        //     heap.maxHeapify(i);
-        //     System.out.println("After MH : "+ Arrays.toString(heap.getValues()));
-
-        //     int temp = heap.heap[0];
-        //     heap.heap[0] = heap.heap[input.length-kCounter ];
-        //     heap.heap[input.length-kCounter] = temp;
-        //     kCounter++;
-
-        //     
-            
-        // }
         
-        System.out.println("Add : "+ Arrays.toString(heap.getValues()));
         /* Test for Add , Extract , Peek, Extact and Add */
 
         // System.out.print("PeekMax :");
@@ -63,35 +46,58 @@ public class AufgabeB4A1 {
         // System.out.println("Max : " + exMax +" Rest : " +  Arrays.toString(heap.getValues()));
         
 
-        // for(int i = 0 ; i < 2 ; i ++) {
+        // for(int i = 0 ; i < 4 ; i ++) {
         //     System.out.print("exMax :");
         //     exMax = heap.extractMax();
         //     System.out.println("Max : " + exMax +" Rest : " +  Arrays.toString(heap.getValues()));
         // }
         
         // heap.add(500);
+        // heap.add(123);
+        // heap.add(12346123);
         // heap.add(-245);
         // System.out.print("add 500 and -245 :");
         // System.out.println(Arrays.toString(heap.getValues()));
 
-
         assert(isHeap(heap.getValues()));
 
         /* Ausgabe */
-        //System.out.println(heapSelect(result, k));
-        //System.out.println(heapSelectFast(result, k));
+        //System.out.println(heapSelect(input, k));
+        System.out.println(heapSelectFast(input, k));
 
     }
 
-    public static int heapSelect(int[] arr, int k) {
-
-        return 0;
-
+    public static int heapSelect (int[] arr, int k) {
+        
+        MaxHeap heap = new MaxHeap(arr.length);
+        heap.addAll(arr);
+        int result = 0;
+        for (int i = 0 ; i < arr.length+1-k ; i++) {
+            result = heap.extractMax();
+            heap.maxHeapify(0);
+        }
+        return result;
+        
     }
-    public static int heapSelectFast(int[] arr, int k) {
-
-        return 0;
-
+    public static int heapSelectFast (int[] arr, int k) {
+        int count = k;
+        int result = -1;
+        int [] sizeK = new int[k];
+        for (int i = 0; i<sizeK.length;i++) {
+            sizeK[i] = arr[i];
+        }
+        MaxHeap heap = new MaxHeap(sizeK.length);
+        heap.addAll(sizeK);
+        while (count<arr.length) {
+            if ( heap.heap[0] > arr[count]) {
+                heap.heap[0] = arr[count];
+                heap.maxHeapify(0);
+            }
+        
+            count++;
+        }
+        result = heap.heap[0];
+        return result;
     }
 
     /* StandardInput wird eingelesen und als Rückgabe ein int[] zurückgeben */
