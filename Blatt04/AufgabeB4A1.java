@@ -59,6 +59,7 @@ public class AufgabeB4A1 {
         // System.out.print("add 500 and -245 :");
         // System.out.println(Arrays.toString(heap.getValues()));
 
+
         assert(isHeap(heap.getValues()));
 
         /* Ausgabe */
@@ -68,7 +69,7 @@ public class AufgabeB4A1 {
     }
 
     public static int heapSelect (int[] arr, int k) {
-        
+
         MaxHeap heap = new MaxHeap(arr.length);
         heap.addAll(arr);
         int result = 0;
@@ -77,7 +78,7 @@ public class AufgabeB4A1 {
             heap.maxHeapify(0);
         }
         return result;
-        
+
     }
     public static int heapSelectFast (int[] arr, int k) {
         int count = k;
@@ -93,7 +94,7 @@ public class AufgabeB4A1 {
                 heap.heap[0] = arr[count];
                 heap.maxHeapify(0);
             }
-        
+
             count++;
         }
         result = heap.heap[0];

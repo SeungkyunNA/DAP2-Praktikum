@@ -65,6 +65,8 @@ public class MaxHeap {
         for (int v : values){
             add(v);
         }
+        maxHeapify(0);
+
     }
     
     public int extractMax() throws IllegalStateException {
@@ -98,45 +100,28 @@ public class MaxHeap {
         /* Maxvalue steht immer an der Position 0 im Heap. */
         return heap[0];    
     }
+    
     public void maxHeapify(int i) {
-        
-        /* setze positionen von Parent node  */
-        int left = (2*i) + 1;
-        int right = (2*i) + 2;
-
-        
-        if (left >= size) { /* Falls A[i] ein Blatt ist */
-            return;
-        } else if (right >= size) { /* Falls nur left child existiert */
-
-            if (heap[left] > heap[i]){
-                /* Swap i <> left */
-                int temp = heap[left];
-                heap[left] = heap[i];
-                heap[i] = temp;
-
-                maxHeapify(left);
-            }
-
-        } else {
-
-            int bigger;
-            if (heap[left] > heap[right]){ /* setze an 'bigger' der Position des größeren Kinds  */
-                bigger = left;
-            } else {
-                bigger = right;
-            }
-
-            if (heap[bigger] > heap[i]){
-                /* Swap i <> bigger */
-                int temp = heap[bigger];
-                heap[bigger] = heap[i];
-                heap[i] = temp;
-
-                maxHeapify(bigger);
-            }
-            
-        }
-        return;
+    	int counter = (size/2)-1;
+    
+    	for (int start = counter; start >= i; start--) {
+    		int largest = start;
+    		int left = start*2+1;
+    		int right = start*2+2;
+    	
+    		if (left < size && heap[left] > heap[largest]) {
+    			largest = left;
+    		}
+    		if (right < size && heap[right] > heap[largest]){
+    			largest = right;
+    		}
+    		if (largest != start) {
+    			int temp = heap[start];
+    			heap[start] = heap[largest];
+    			heap[largest] = temp;
+    			maxHeapify(largest);
+    		}
+    	}
+    	
     }
 }
