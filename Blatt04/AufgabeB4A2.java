@@ -39,22 +39,8 @@ public class AufgabeB4A2 {
         Instant start;
         Instant finish;
         long time = 0;
-
-        /* Zeitmessung für Sort and peek (Use basic-functions) */
-        int asap=0;
-
-        for (int i=0;i<20;i++){
-            shuffle(input,input.length);
-
-            start = Instant.now();
-            Arrays.sort(input);
-            asap += input[k-1];
-            finish = Instant.now();
-            time += Duration.between(start, finish).toMillis();
-        }
-
-        long sap = time/20;
-        time = 0;
+        Random r = new Random();
+        int find = r.nextInt(input.length-1);
 
 
         /* Zeitmessung für quickSelectFirst */
@@ -64,7 +50,7 @@ public class AufgabeB4A2 {
             shuffle(input,input.length);
 
             start = Instant.now();
-            aqsf += quickSelectFirst(input, k);
+            aqsf += quickSelectFirst(input, find);
             finish = Instant.now();
             time += Duration.between(start, finish).toMillis();
         }
@@ -79,7 +65,7 @@ public class AufgabeB4A2 {
             shuffle(input,input.length);
 
             start = Instant.now();
-            aqsr += quickSelectRandom(input, k);
+            aqsr += quickSelectRandom(input, find);
             finish = Instant.now();
             time += Duration.between(start, finish).toMillis();
         }
@@ -94,7 +80,7 @@ public class AufgabeB4A2 {
             shuffle(input,input.length);
 
             start = Instant.now();
-            ahs += heapSelect(input, k);
+            ahs += heapSelect(input, find);
             finish = Instant.now();
             time += Duration.between(start, finish).toMillis();
         }
@@ -109,7 +95,7 @@ public class AufgabeB4A2 {
             shuffle(input,input.length);
 
             start = Instant.now();
-            ahsf += heapSelectFast(input, k);
+            ahsf += heapSelectFast(input, find);
             finish = Instant.now();
             time += Duration.between(start, finish).toMillis();
         }
@@ -119,22 +105,23 @@ public class AufgabeB4A2 {
 
         System.out.println("________________________________________________");
         System.out.println("#CASE 1");
-        System.out.println("Input : "+input.length+" unsorted integers. Inputs are shuffled every iteration.");
-        System.out.println("Sort and Peek (Average of 20 times):  " + sap + "ms | result : " + asap/20 + " is " + k + "-smallst number" );
-        System.out.println("QuickSelcetFirst (Average of 20 times):  " + qsf + "ms | result : " + aqsf/20 + " is " + k + "-smallst number" );
-        System.out.println("QuickSelcetRandom (Average of 20 times): " + qsr + "ms | result : " + aqsr/20 + " is " + k + "-smallst number" );
-        System.out.println("heapSelect (Average of 20 times):         " + hs + "ms | result : " + ahs/20 + " is " + k + "-smallst number" );
-        System.out.println("heapSelectFast (Average of 20 times):    " + hsf + "ms | result : " + ahsf/20 + " is " + k + "-smallst number" );
+        System.out.println("Input : "+input.length+" unsorted integers. Inputs are shuffled every iteration. for 'k' also random choose");
+        System.out.println();
+        System.out.println("QuickSelcetFirst (Average of 20 times):  " + qsf + "ms | result : " + aqsf/20 + " is " + find + "-smallst number" );
+        System.out.println("QuickSelcetRandom (Average of 20 times): " + qsr + "ms | result : " + aqsr/20 + " is " + find + "-smallst number" );
+        System.out.println("heapSelect (Average of 20 times):         " + hs + "ms | result : " + ahs/20 + " is " + find + "-smallst number" );
+        System.out.println("heapSelectFast (Average of 20 times):    " + hsf + "ms | result : " + ahsf/20 + " is " + find + "-smallst number" );
         System.out.println("________________________________________________");
 
         Arrays.sort(input);
+        find = r.nextInt(input.length-1);
 
         /* Zeitmessung für quickSelectFirst with sorted Input */
         aqsf=0;
 
         for (int i=0;i<20;i++){
             start = Instant.now();
-            aqsf += quickSelectFirst(input, k);
+            aqsf += quickSelectFirst(input, input.length);
             finish = Instant.now();
             time += Duration.between(start, finish).toMillis();
         }
@@ -147,7 +134,7 @@ public class AufgabeB4A2 {
         start = Instant.now();
         for (int i=0;i<20;i++){
             start = Instant.now();
-            aqsr += quickSelectRandom(input, k);
+            aqsr += quickSelectRandom(input, input.length);
             finish = Instant.now();
             time += Duration.between(start, finish).toMillis();
         }
@@ -160,7 +147,7 @@ public class AufgabeB4A2 {
         
         for (int i=0;i<20;i++){
             start = Instant.now();
-            ahs += heapSelect(input, k);
+            ahs += heapSelect(input, input.length);
             finish = Instant.now();
             time += Duration.between(start, finish).toMillis();
         }
@@ -173,7 +160,7 @@ public class AufgabeB4A2 {
 
         for (int i=0;i<20;i++){
             start = Instant.now();
-            ahsf += heapSelectFast(input, k);
+            ahsf += heapSelectFast(input, input.length);
             finish = Instant.now();
             time += Duration.between(start, finish).toMillis();
         }
@@ -182,91 +169,165 @@ public class AufgabeB4A2 {
         time = 0;
         System.out.println("________________________________________________");
         System.out.println("#CASE 2");
-        System.out.println("Input : "+input.length+" sorted integers.");
-        System.out.println("QuickSelcetFirst (Average of 20 times):  " + qsf + "ms | result : " + aqsf/20 + " is " + k + "-smallst number" );
-        System.out.println("QuickSelcetRandom (Average of 20 times): " + qsr + "ms | result : " + aqsr/20 + " is " + k + "-smallst number" );
-        System.out.println("heapSelect (Average of 20 times):         " + hs + "ms | result : " + ahs/20 + " is " + k + "-smallst number" );
-        System.out.println("heapSelectFast (Average of 20 times):    " + hsf + "ms | result : " + ahsf/20 + " is " + k + "-smallst number" );
+        System.out.println("Input : "+input.length+" sorted integers and find the biggest number. (Worst case for an algorithm that chooses first pivot)");
+        System.out.println();
+        System.out.println("QuickSelcetFirst (Average of 20 times):  " + qsf + "ms | result : " + aqsf/20 + " is " + input.length + "-smallst number" );
+        System.out.println("QuickSelcetRandom (Average of 20 times): " + qsr + "ms | result : " + aqsr/20 + " is " + input.length + "-smallst number" );
+        System.out.println("heapSelect (Average of 20 times):         " + hs + "ms | result : " + ahs/20 + " is " + input.length + "-smallst number" );
+        System.out.println("heapSelectFast (Average of 20 times):    " + hsf + "ms | result : " + ahsf/20 + " is " + input.length + "-smallst number" );
         System.out.println("________________________________________________");
+
+        shuffle(input,input.length);
+        find = r.nextInt(input.length-1);
+
+
+        for (int i = 0 ; i < input.length/2 ; i ++) {
+            input[i] = i * -1;
+        }
+
+                /* Zeitmessung für quickSelectFirst with sorted Input */
+                aqsf=0;
+
+                for (int i=0;i<20;i++){
+                    start = Instant.now();
+                    aqsf += quickSelectFirst(input, find);
+                    finish = Instant.now();
+                    time += Duration.between(start, finish).toMillis();
+                }
+        
+                qsf = time/20;
+                time = 0;
+        
+                /* Zeitmessung für quickSelectRandom with sorted Input */
+                aqsr=0;
+                start = Instant.now();
+                for (int i=0;i<20;i++){
+                    start = Instant.now();
+                    aqsr += quickSelectRandom(input, find);
+                    finish = Instant.now();
+                    time += Duration.between(start, finish).toMillis();
+                }
+                
+                qsr = time/20;
+                time = 0;
+        
+                /* Zeitmessung für heapSelect with sorted Input */
+                ahs=0;
+                
+                for (int i=0;i<20;i++){
+                    start = Instant.now();
+                    ahs += heapSelect(input, find);
+                    finish = Instant.now();
+                    time += Duration.between(start, finish).toMillis();
+                }
+        
+                hs = time/20;
+                time = 0;
+        
+                /* Zeitmessung für heapSelectFast with sorted Input */
+                ahsf=0;
+        
+                for (int i=0;i<20;i++){
+                    start = Instant.now();
+                    ahsf += heapSelectFast(input, find);
+                    finish = Instant.now();
+                    time += Duration.between(start, finish).toMillis();
+                }
+        
+                hsf = time/20;
+                time = 0;
+                System.out.println("________________________________________________");
+                System.out.println("#CASE 3");
+                System.out.println("The first half of the input are negative numbers that are sorted, and the other half are positive numbers that are randomly shuffled.");
+                System.out.println();
+                System.out.println("QuickSelcetFirst (Average of 20 times):  " + qsf + "ms | result : " + aqsf/20 + " is " + find + "-smallst number" );
+                System.out.println("QuickSelcetRandom (Average of 20 times): " + qsr + "ms | result : " + aqsr/20 + " is " + find + "-smallst number" );
+                System.out.println("heapSelect (Average of 20 times):         " + hs + "ms | result : " + ahs/20 + " is " + find + "-smallst number" );
+                System.out.println("heapSelectFast (Average of 20 times):    " + hsf + "ms | result : " + ahsf/20 + " is " + find + "-smallst number" );
+                System.out.println("________________________________________________");
+
+
     }
     public static int partition(int[] arr, int l, int r, int p) {
     
-    if (arr.length <= 2){
-        if (p == 1) {
-            return arr[1];
-        } else {
-            return arr[0];
+        if (arr.length <= 2){
+            return arr[p];
         }
-    }
 
-    if (p - l > r) {
-        throw new IllegalArgumentException("Pivot index is too large");
-    }
+        
+        int pivot = arr[p];   // Random erzeugte Zahl wird Pivotposition addiert.
+        int pivot_pos = p;
+        int iterator = l;
+        int right_area = r;
 
-    int pivot = arr[l+p];   // Random erzeugte Zahl wird Pivotposition addiert.
-    int pivot_pos = l+p;
-    int iterator = l;
-    int right_area = r;
+        while(iterator <= right_area) {
 
-    while(iterator <= right_area) {
+            if (arr[iterator] > pivot && iterator > pivot_pos) { /* Wenn Iterator vor der Position des Pivot ist, tauschen wir nicht (gehe zu else Fall) */
+                int save = arr[pivot_pos];
+                arr[pivot_pos] = arr[iterator];
+                arr[iterator] = save;
+                pivot_pos++;
+                iterator++;
 
-        if (arr[iterator] < pivot && iterator > pivot_pos) { /* Wenn Iterator vor der Position des Pivot ist, tauschen wir nicht (gehe zu else Fall) */
-            int save = arr[pivot_pos];
-            arr[pivot_pos] = arr[iterator];
-            arr[iterator] = save;
-            pivot_pos++;
-            iterator++;
+            } else if (arr[iterator] < pivot) {
+                int save = arr[iterator];
+                arr[iterator] = arr[right_area];
+                arr[right_area] = save;
+                if (right_area == pivot_pos) {
+                    pivot_pos = iterator;
+                }
+                right_area--;
 
-        } else if (arr[iterator] > pivot) {
-            int save = arr[iterator];
-            arr[iterator] = arr[right_area];
-            arr[right_area] = save;
-            if (right_area == pivot_pos) {
-                pivot_pos = iterator;
+            } else {
+                iterator++;
             }
-            right_area--;
-
-        } else {
-            iterator++;
         }
-    }
-    //printPartiotion(arr , l , r , pivot_pos); /* Only for Test. print result of Patitioning */
+        //printPartiotion(arr , l , r , pivot_pos); /* Only for Test. print result of Patitioning */
 
-    return pivot_pos;
+        return pivot_pos;
     }
+
+    /* Quickselect First */
     public static int quickSelectFirst(int[] arr, int k) {
 
-    /* Fehlerbehandlung fuer leere Array */
-    if(arr.length == 0) {
-        throw new IllegalArgumentException();
+        /* Fehlerbehandlung fuer leere Array */
+        if(arr.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        /* Early return fuer 1-laenge Array */
+        if(arr.length == 1) {
+            return arr[0];
+        }
+
+        int[] copy = new int[arr.length];
+        for (int i=0;i<arr.length;i++){
+            copy[i] = arr[i];
+        }
+
+        /* Setze Variablen fuer linke und rechte Schranke */
+        int left = 0; 
+        int right = copy.length-1;
+
+        /* Partitionierung mit Schleife. Hier wird immer erste Element von Teilmenge ausgewaelt. */
+
+        int pivotPos = partition(copy, left, right, left);
+        while (pivotPos != copy.length-k) {
+
+            if (pivotPos > copy.length-k) {                   /* Wenn k in "K" Teilarray steht */
+                right = pivotPos - 1;
+                pivotPos = partition(copy, left, right, left);
+            } else if (pivotPos == copy.length-k) {           /* Wenn k in "M" Teilarray steht */
+                return copy[pivotPos];
+            } else {                                /* Wenn k in "G" Teilarray steht */
+                left = pivotPos + 1;
+                pivotPos = partition(copy, left, right, left);
+            }  
+        }
+
+        return copy[pivotPos];
     }
-    /* Early return fuer 1-laenge Array */
-    if(arr.length == 1) {
-        return arr[0];
-    }
 
-    /* Setze Variablen fuer linke und rechte Schranke */
-    int left = 0; 
-    int right = arr.length-1;
-
-    /* Partitionierung mit Schleife. Hier wird immer erste Element von Teilmenge ausgewaelt. */
-
-    int pivotPos = partition(arr, left, right, 0);
-    while (pivotPos != k-1) {
-
-        if (pivotPos > k-1) {                   /* Wenn k in "K" Teilarray steht */
-            right = pivotPos - 1;
-            pivotPos = partition(arr, left, right, 0);
-        } else if (pivotPos == k-1) {           /* Wenn k in "M" Teilarray steht */
-            return arr[pivotPos];
-        } else {                                /* Wenn k in "G" Teilarray steht */
-            left = pivotPos + 1;
-            pivotPos = partition(arr, pivotPos+1, right, 0);
-        }  
-    }
-    return arr[pivotPos];
-
-    }
+    /* Quickselect Random */
     public static int quickSelectRandom(int[] arr, int k) {
         /* Fehlerbehandlung fuer leere Array */
         if(arr.length == 0) {
@@ -292,45 +353,50 @@ public class AufgabeB4A2 {
             random = r.nextInt(right - left - 1);
         } 
 
+        int[] copy = new int[arr.length];
+        for (int i=0;i<arr.length;i++){
+            copy[i] = arr[i];
+        }
+
         /* Partitionierung mit Schleife. Hier wird immer erste Element von Teilmenge ausgewaelt. */
 
-        int pivotPos = partition(arr, left, right, random);
+        int pivotPos = partition(copy, left, right, left + random);
 
-        while (pivotPos != k-1) {
+        while (pivotPos != copy.length-k) {
 
-            if (pivotPos > k-1) {                   /* Wenn k in "K" Teilarray steht */
+            if (pivotPos > copy.length-k) {                   /* Wenn k in "G" Teilarray steht */
                 right = pivotPos - 1;
-                if (right - left <= 1) { /* Wenn weniger als 2 Element in Array gibt, random ist 0. */
+                if (right - left <= 2) { /* Wenn weniger als 2 Element in Array gibt, random ist 0. */
                     random = 0;
                 } else {
                     random = r.nextInt(right - left - 1) ;
                 } 
 
-                pivotPos = partition(arr, left, right, random); 
+                pivotPos = partition(copy, left, right, left + random); 
 
-            } else if (pivotPos == k-1 || left == right) {           /* Wenn k in "M" Teilarray steht */
+            } else if (pivotPos == copy.length-k || left == right) {           /* Wenn k in "M" Teilarray steht */
                 
-                return arr[pivotPos];
+                return copy[pivotPos];
 
-            } else {                                                /* Wenn k in "G" Teilarray steht */
+            } else {                                                /* Wenn k in "K" Teilarray steht */
                 left = pivotPos + 1;
-                if (right - left <= 1) { /* Wenn weniger als 2 Element in Array gibt, random ist 0. */
+                if (right - left <= 2) { /* Wenn weniger als 2 Element in Array gibt, random ist 0. */
                     random = 0;
                 } else {
                     random = r.nextInt(right - left - 1);
                 } 
 
-                pivotPos = partition(arr, left, right, random);
+                pivotPos = partition(copy, left, right, left+random);
             }  
         }
-        return arr[pivotPos];
+        return copy[pivotPos];
     }
 
     /* Heapselect aus A1 */
     public static int heapSelect (int[] arr, int k) {
 
         MaxHeap heap = new MaxHeap(arr.length);
-        heap.addAll(arr);
+        heap.buildMax(arr);
         int result = 0;
         for (int i = 0 ; i < arr.length+1-k ; i++) {
             result = heap.extractMax();
@@ -348,7 +414,7 @@ public class AufgabeB4A2 {
             sizeK[i] = arr[i];
         }
         MaxHeap heap = new MaxHeap(sizeK.length);
-        heap.addAll(sizeK);
+        heap.buildMax(sizeK);
         while (count<arr.length) {
             if ( heap.heap[0] > arr[count]) {
                 heap.heap[0] = arr[count];
@@ -414,7 +480,7 @@ public class AufgabeB4A2 {
                 }
                 
             } else if (i == pivot_pos) {
-                System.out.print("M : [" + arr[i] + "] | "  );
+                System.out.print("M : [" + arr[i] + "] idx : "+i+"| "  );
 
             } else {
                 if (i == pivot_pos+1) {

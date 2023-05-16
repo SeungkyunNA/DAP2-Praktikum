@@ -37,33 +37,27 @@ public class AufgabeB4A1 {
     
         /* BuildMaxHeap */
         MaxHeap heap = new MaxHeap(input.length);
-        heap.addAll(input);
+        heap.buildMax(input);
         
-        /* Test for Add , Extract , Peek, Extact and Add */
-
-        // System.out.print("PeekMax :");
-        // int exMax = heap.peekMax();
-        // System.out.println("Max : " + exMax +" Rest : " +  Arrays.toString(heap.getValues()));
-        
-
-        // for(int i = 0 ; i < 4 ; i ++) {
-        //     System.out.print("exMax :");
-        //     exMax = heap.extractMax();
-        //     System.out.println("Max : " + exMax +" Rest : " +  Arrays.toString(heap.getValues()));
-        // }
-        
-        // heap.add(500);
-        // heap.add(123);
-        // heap.add(12346123);
-        // heap.add(-245);
-        // System.out.print("add 500 and -245 :");
-        // System.out.println(Arrays.toString(heap.getValues()));
-
+        /* Assert Test for isHeap , add , Extract , Peek, Extact and Add */
 
         assert(isHeap(heap.getValues()));
 
+        int sizeBeforePeek = heap.getSize();
+        int peekMax = heap.peekMax();
+        assert(isPeek(heap.getValues() , peekMax , sizeBeforePeek));
+
+        int[] backup = Arrays.copyOf(heap.getValues(), heap.getCapacity());
+        int exMax = heap.extractMax();
+        assert(isExtracted(backup,heap.getValues(),exMax));
+
+        int sizeBeforeAdd = heap.getSize();
+        heap.add(Integer.MAX_VALUE);
+        assert(isAdded(heap.getValues() , sizeBeforeAdd));
+
+        
         /* Ausgabe */
-        //System.out.println(heapSelect(input, k));
+        System.out.println(heapSelect(input, k));
         System.out.println(heapSelectFast(input, k));
 
     }
@@ -71,7 +65,7 @@ public class AufgabeB4A1 {
     public static int heapSelect (int[] arr, int k) {
 
         MaxHeap heap = new MaxHeap(arr.length);
-        heap.addAll(arr);
+        heap.buildMax(arr);
         int result = 0;
         for (int i = 0 ; i < arr.length+1-k ; i++) {
             result = heap.extractMax();
@@ -88,7 +82,7 @@ public class AufgabeB4A1 {
             sizeK[i] = arr[i];
         }
         MaxHeap heap = new MaxHeap(sizeK.length);
-        heap.addAll(sizeK);
+        heap.buildMax(sizeK);
         while (count<arr.length) {
             if ( heap.heap[0] > arr[count]) {
                 heap.heap[0] = arr[count];
@@ -140,6 +134,7 @@ public class AufgabeB4A1 {
   
      }
 
+     /* Assert for Heap. */
      private static boolean isHeap(int[] data) {
 
         for (int i = 0 ; i < data.length ; i ++) {
@@ -159,6 +154,55 @@ public class AufgabeB4A1 {
         }
         return true;
      }
+      /* Assert for peekMax() .*/
+    private static boolean isPeek(int[] data , int p , int sizeBeforePeek) {
+
+        if (data.length != sizeBeforePeek) {    // Durch peek() darf nicht Size von Heap aendern.
+            return false;
+        }
+
+        if (data[0] != p) {   // p sollte am grossten Zahl in backup[] sein, und befindet sich genau 0 te index
+            return false;
+        }
+
+        return true;
+     }
+
+     /* Assert for Extract.
+      * backup : Array bevor Extraction
+      * data   : Array nachdem Extraction
+      * e      : Die aus dem Backup extrahierte Zahl
+     */
+     private static boolean isExtracted(int[] backup , int[] data , int e) {
+
+        if (backup.length - 1 != data.length){ // Die Länge von backup[] sollte genau um 1 Element länger sein als data[]
+            return false;
+        }
+
+        if (backup[0] != e) {   // e sollte am grossten Zahl in backup[] sein, und befindet sich genau 0 te index
+            return false;
+        }
+
+        for (int v : data) {    // in data[] muss kein e vorhanden.
+            if (v == e) {
+                return false;
+            }
+        }
+
+        return true;
+     }
+
+     /* Assert for Add. */
+    private static boolean isAdded(int[] data , int sizeBeforeAdd) {
+
+        if (data.length != sizeBeforeAdd + 1){ // Die Länge von backup[] sollte genau um 1 Element länger sein als bevor der Addition
+            return false;
+        }
+
+        if (data[0] != Integer.MAX_VALUE) {   // MAX_VALUE sollte sich genau 0 te index befinden.
+            return false;
+        }
+
+        return true;
+     }
 }
-
-

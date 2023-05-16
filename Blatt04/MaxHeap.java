@@ -1,5 +1,3 @@
-
-
 public class MaxHeap {
 
     int capacity; // Attribut für Kapazität
@@ -61,11 +59,14 @@ public class MaxHeap {
     }
     
     /* Hilfsfunktion. um zu ermöglichen, dass ein Array direkt im Heap speichern */
-    public void addAll(int[] values) {
-        for (int v : values){
-            add(v);
+    public void buildMax(int[] values) {
+        for (int v=0 ; v<values.length ; v++){
+            heap[v] = values[v];
+            size++;
         }
-        maxHeapify(0);
+        for(int i = size/2;i>=0;i--){
+            maxHeapify(i);
+        }
 
     }
     
@@ -102,26 +103,28 @@ public class MaxHeap {
     }
     
     public void maxHeapify(int i) {
-    	int counter = (size/2)-1;
-    
-    	for (int start = counter; start >= i; start--) {
-    		int largest = start;
-    		int left = start*2+1;
-    		int right = start*2+2;
-    	
-    		if (left < size && heap[left] > heap[largest]) {
-    			largest = left;
-    		}
-    		if (right < size && heap[right] > heap[largest]){
-    			largest = right;
-    		}
-    		if (largest != start) {
-    			int temp = heap[start];
-    			heap[start] = heap[largest];
-    			heap[largest] = temp;
-    			maxHeapify(largest);
-    		}
-    	}
-    	
+
+        if (i < 0 || i > size) {
+            System.err.println("Maxheapify Error");
+            return;
+        }
+
+        int parent = i;
+        int left = (i*2)+1;
+        int right = (i*2)+2;
+
+        if (left < size && heap[left] > heap[parent]) {
+            parent = left;
+        }
+        if (right < size && heap[right] > heap[parent]){
+            parent = right;
+        }
+        if (parent != i) {
+            int temp = heap[i];
+            heap[i] = heap[parent];
+            heap[parent] = temp;
+            maxHeapify(parent);
+        }
+
     }
 }
