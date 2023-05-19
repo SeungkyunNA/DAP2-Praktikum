@@ -5,33 +5,32 @@ import java.util.Scanner;
 
 /* 
 
-CASE #1 :TEST RESULT (unsorted Input)
+TEST CASE #1 : (unsorted Input)
 
-Before Sorting : [1072032488, 380797624, 663651091, ... ,77978475, 952860783]
-Size of Input : 200000
+Before Sorting : [177253449, 984422294, 623402426, ... ,236007191, 1019102979] Size of Input : 200000
 
-LSD took : 19ms
-is LSD sorted? : true
-MSD took : 9248ms
-is MSD sorted? : true
+LSD took : 19ms | Assert : true
+MSD took : 9542ms | Assert : true
 
 Sort After LSD : [1073740774, 1073738598, 1073690974, ... ,2096, 956]
 Sort After MSD : [1073740774, 1073738598, 1073690974, ... ,2096, 956]
 
 
-CASE #2 : TEST RESULT (sorted Input)
+TEST CASE #2 : (sorted Input)
 
-Before Sorting : [956, 2096, 8724, ... ,1073738598, 1073740774]
-Size of Input : 200000
+Before Sorting : [956, 2096, 8724, ... ,1073738598, 1073740774] Size of Input : 200000
 
-LSD took : 20ms
-is LSD sorted? : true
-MSD took : 9646ms
-is MSD sorted? : true
+LSD took : 20ms | Assert : true
+MSD took : 9535ms | Assert : true
 
 Sort After LSD : [1073740774, 1073738598, 1073690974, ... ,2096, 956]
-
 Sort After MSD : [1073740774, 1073738598, 1073690974, ... ,2096, 956]
+
+
+Time complexity :
+
+LSD-sort : Da wir genau 4 mal auf Input durchlaufen. 4(n + MAX - min) -> O(n + MAX - min)
+MSD-sort : Worst case, wenn alle Elementen unterschiedliche B-Byte haben, Rekursion wird  
 
 */
 
@@ -53,13 +52,13 @@ public class AufgabeB6A1{
         }
 
         /* only for test!! */
-        Arrays.sort(input_lsd);
+        //Arrays.sort(input_lsd);
 
         input_msd = Arrays.copyOf(input_lsd , input_lsd.length);
 
         System.out.println();
-        System.out.println("Before Sorting : " + arrToStr(input_lsd));
-        System.out.println("Size of Input : " + input_lsd.length);
+        System.out.print("Before Sorting : " + arrToStr(input_lsd));
+        System.out.println(" Size of Input : " + input_lsd.length);
         System.out.println();
         AufgabeB6A1 lsd = new AufgabeB6A1(input_lsd);
         AufgabeB6A1 msd = new AufgabeB6A1(input_msd);
@@ -70,18 +69,19 @@ public class AufgabeB6A1{
         Instant finish = Instant.now();
         long time = Duration.between(start, finish).toMillis();
 
-        System.out.println("LSD took : " + time + "ms");
-        System.out.println("is LSD sorted? : " + isSort(lsd.data));
-        assert(isSort(lsd.data));
+        boolean lsd_sort = isSort(lsd.data);
+        assert(lsd_sort);
+        System.out.println("LSD took : " + time + "ms" + " | Assert : " + lsd_sort);
+
 
         start = Instant.now();
         msd.msdRadix();
         finish = Instant.now();
         time = Duration.between(start, finish).toMillis();
 
-        System.out.println("MSD took : " + time+ "ms");
-        System.out.println("is MSD sorted? : " + isSort(msd.data));
-        assert(isSort(msd.data));
+        boolean msd_sort = isSort(lsd.data);
+        assert(msd_sort);
+        System.out.println("MSD took : " + time+ "ms" + " | Assert : " + msd_sort);
 
         System.out.println();
         System.out.println("Sort After LSD : " + arrToStr(lsd.data));
@@ -92,16 +92,15 @@ public class AufgabeB6A1{
     }
 
     /* Class Object */
+
     public int[] data;
     public AufgabeB6A1(int[] data) {
         this.data = data;
-
     }
+    
     public int[] sortByByte(int l, int r, int b) {
         int[] arrTemp = new int[r - l + 1]; 
-        int[] keyTemp = new int[r - l + 1];
-        int[] keySave = new int[data.length];
-        Arrays.fill(keySave , -1);
+        
 
         /* Erstelle ein Array ( C ) fuer die Heufigkeit des Schluessels "count()" */
         /* Danach "countToIdx()" addieret je Schluessel miteinander, um position zu stimmen (C') */
@@ -110,18 +109,24 @@ public class AufgabeB6A1{
 
         for (int j = r ; j >= l ; j --) {
             int q = (data[j] >> 8*b) & 0xFF; // ermittle den Schlüssel q von A[j]
-            keyTemp[freq[q]-1] = q;
             arrTemp[freq[q]-1] = data[j];    // speichere in Hilfsarray entsprechende Werte
             freq[q]--;                       // Position um 1 verringen
+        }
+
+        
+        /* Erstelle ein Array um die Schlussel zu speichern und zurueckzugeben.*/
+        int[] keyList = new int[data.length];
+        for (int i = 0 ; i < keyList.length ; i++) {
+            keyList[i] = -1;            // init = -1 
         }
 
         /* Sortierung wird in Hilfsarray fertig. kopieren wir zu data[] */
         for (int idx = l ; idx < r+1 ; idx ++) {
             data[idx] = arrTemp[idx-l];        
-            keySave[idx] = keyTemp[idx-l];
+            keyList[idx] = (arrTemp[idx-l] >> 8*b) & 0xFF;
         }
 
-        return keySave;
+        return keyList;
 
     }
 
@@ -148,7 +153,7 @@ public class AufgabeB6A1{
         int end = 1;
 
         while(end < data.length) {
-            /* if is key = -1 , means not range of this Loop. Go to Else */
+            /* if is key = -1 , means not target-range of current Partition. Go to Else */
             /* if keys[start] keys[end] same value stored, increment end Pointer 1. */
             if(keys[start] != -1 && keys[start] == keys[end]){
                 end++;
