@@ -79,7 +79,7 @@ public class AufgabeB6A1{
         finish = Instant.now();
         time = Duration.between(start, finish).toMillis();
 
-        boolean msd_sort = isSort(lsd.data);
+        boolean msd_sort = isSort(msd.data);
         assert(msd_sort);
         System.out.println("MSD took : " + time+ "ms" + " | Assert : " + msd_sort);
 
@@ -94,11 +94,13 @@ public class AufgabeB6A1{
     /* Class Object */
 
     public int[] data;
+    public int count = 0;
     public AufgabeB6A1(int[] data) {
         this.data = data;
     }
     
     public int[] sortByByte(int l, int r, int b) {
+        count++;
         int[] arrTemp = new int[r - l + 1]; 
         
 
@@ -121,6 +123,7 @@ public class AufgabeB6A1{
         }
 
         /* Sortierung wird in Hilfsarray fertig. kopieren wir zu data[] */
+        /* in Keylist wird auch kopiert, aber nur die Keys  */
         for (int idx = l ; idx < r+1 ; idx ++) {
             data[idx] = arrTemp[idx-l];        
             keyList[idx] = (arrTemp[idx-l] >> 8*b) & 0xFF;
@@ -134,14 +137,34 @@ public class AufgabeB6A1{
         for(int i = 0 ; i < 4 ; i ++) {        // b = 0 ist niederwerttigte Byte
             sortByByte(0, data.length-1, i);    
         }
+        System.out.println("LSD SortByByte Call : " + count);
     }
     
-    
+    /* Naive Funkction for MSD */
+    public void insertSort(int l , int r) {
+
+        int target;
+        for (int i = l+1 ; i <=r ; i ++) {
+            target = data[i];
+            int j = i - 1;
+            while (j >= l && data[j] < target) {
+                int save = data[j];
+                data[j] = data[j+1];
+                data[j+1] = save;
+                j--;
+            }
+        }
+    }
     
     public void msdRadix(int l, int r, int b) {
         
         /* Loop-end condition */
         if(b < 0) {
+            return;
+        }
+
+        if(r-l < 32) {
+            insertSort(l,r);
             return;
         }
 
@@ -176,12 +199,12 @@ public class AufgabeB6A1{
                 end = start+1;
             }
         }
-
     }
 
     /* Initial call for MSD. */
     public void msdRadix() {
         msdRadix(0,  this.data.length-1, 3);
+        System.out.println("MSD SortByByte Call : " + count);
     }
 
 
