@@ -7,31 +7,47 @@ import java.util.Scanner;
 
 TEST CASE #1 : (unsorted Input)
 
-Before Sorting : [177253449, 984422294, 623402426, ... ,236007191, 1019102979] Size of Input : 200000
+Before Sorting : [393933850, 896503597, 987087592, ... ,356210828, 311234094] Size of Input : 10000000
 
-LSD took : 19ms | Assert : true
-MSD took : 9542ms | Assert : true
+LSD took : 194ms | Assert : true (LSD SortByByte Call : 4 times)
+MSD took : 353ms | Assert : true (MSD SortByByte Call : 16449 times)
 
-Sort After LSD : [1073740774, 1073738598, 1073690974, ... ,2096, 956]
-Sort After MSD : [1073740774, 1073738598, 1073690974, ... ,2096, 956]
+Sort After LSD : [1073741818, 1073741616, 1073741609, ... ,45, 26]
+Sort After MSD : [1073741818, 1073741616, 1073741609, ... ,45, 26]
 
 
 TEST CASE #2 : (sorted Input)
 
-Before Sorting : [956, 2096, 8724, ... ,1073738598, 1073740774] Size of Input : 200000
+Before Sorting : [26, 45, 120, ... ,1073741616, 1073741818] Size of Input : 10000000
 
-LSD took : 20ms | Assert : true
-MSD took : 9535ms | Assert : true
+LSD took : 190ms | Assert : true (LSD SortByByte Call : 4)
+MSD took : 377ms | Assert : true (MSD SortByByte Call : 16449)
 
-Sort After LSD : [1073740774, 1073738598, 1073690974, ... ,2096, 956]
-Sort After MSD : [1073740774, 1073738598, 1073690974, ... ,2096, 956]
+Sort After LSD : [1073741818, 1073741616, 1073741609, ... ,45, 26]
+Sort After MSD : [1073741818, 1073741616, 1073741609, ... ,45, 26]
+
+
+TEST CASE #3 : (Input size 1000 -> 10000000)
+
+size 1000       : LSD : 0ms   ,  MSD 0ms
+size 10000      : LSD : 3ms   ,  MSD 2ms
+size 100000     : LSD : 11ms  ,  MSD 12ms
+size 1000000    : LSD : 48ms  ,  MSD 58ms
+size 10000000   : LSD : 191ms ,  MSD 370ms
+
+Fazit : Es zeigt eine lineare Zeit unabhängig von der Sortierung des Eingangs. MSD ist etwas langsamer.
 
 
 Time complexity :
 
 LSD-sort : Da wir genau 4 mal auf Input durchlaufen. 4(n + MAX - min) -> O(n + MAX - min)
-MSD-sort : Worst case, wenn alle Elementen unterschiedliche B-Byte haben, Rekursion wird  
+MSD-sort : Alle Elementen sind genau maximal 4 mal durch Countingsort gerechnet werden. d.h fuer MSD auch O(n + MAX - min).
 
+Wieso MSD langsamer? : 
+1.  Weil absolut mehrer Rekursion noetig als LSD 
+2.  Insertsort kann zu hauefig angerufen werden (dann teilweise ist die Sortierung n^2 ausgelaufen)
+3.  Viele IF-ELSE-Bloecke fuehren (unabhaengig von der tatsaechlichen Anzahl der Operationen) 
+    zu einer Leistungseinbusse im Zusammenhang mit der "CPU branch prediction".
 */
 
 public class AufgabeB6A1{
@@ -51,8 +67,6 @@ public class AufgabeB6A1{
             return;
         }
 
-        /* only for test!! */
-        //Arrays.sort(input_lsd);
 
         input_msd = Arrays.copyOf(input_lsd , input_lsd.length);
 
@@ -60,11 +74,13 @@ public class AufgabeB6A1{
         System.out.print("Before Sorting : " + arrToStr(input_lsd));
         System.out.println(" Size of Input : " + input_lsd.length);
         System.out.println();
+
+        /* AUFGABE START (LSD) */
+
         AufgabeB6A1 lsd = new AufgabeB6A1(input_lsd);
         AufgabeB6A1 msd = new AufgabeB6A1(input_msd);
 
-        // Sort Start with Time measurement
-        Instant start = Instant.now();
+        Instant start = Instant.now(); // Sort Start with Time measurement
         lsd.lsdRadix();
         Instant finish = Instant.now();
         long time = Duration.between(start, finish).toMillis();
@@ -74,7 +90,9 @@ public class AufgabeB6A1{
         System.out.println("LSD took : " + time + "ms" + " | Assert : " + lsd_sort);
 
 
-        start = Instant.now();
+        /* AUFGABE START (MSD) */
+
+        start = Instant.now();         // Sort Start with Time measurement
         msd.msdRadix();
         finish = Instant.now();
         time = Duration.between(start, finish).toMillis();
@@ -99,6 +117,7 @@ public class AufgabeB6A1{
         this.data = data;
     }
     
+    /* AUFGABE - Countingsort */
     public int[] sortByByte(int l, int r, int b) {
         count++;
         int[] arrTemp = new int[r - l + 1]; 
@@ -115,24 +134,20 @@ public class AufgabeB6A1{
             freq[q]--;                       // Position um 1 verringen
         }
 
-        
-        /* Erstelle ein Array um die Schlussel zu speichern und zurueckzugeben.*/
-        int[] keyList = new int[data.length];
-        for (int i = 0 ; i < keyList.length ; i++) {
-            keyList[i] = -1;            // init = -1 
-        }
 
         /* Sortierung wird in Hilfsarray fertig. kopieren wir zu data[] */
-        /* in Keylist wird auch kopiert, aber nur die Keys  */
+
         for (int idx = l ; idx < r+1 ; idx ++) {
             data[idx] = arrTemp[idx-l];        
-            keyList[idx] = (arrTemp[idx-l] >> 8*b) & 0xFF;
         }
 
-        return keyList;
+        /* Fuer MSD */
+        return arrTemp;
+
 
     }
 
+    /* AUFGABE - LSD Sort */
     public void lsdRadix() {
         for(int i = 0 ; i < 4 ; i ++) {        // b = 0 ist niederwerttigte Byte
             sortByByte(0, data.length-1, i);    
@@ -140,22 +155,9 @@ public class AufgabeB6A1{
         System.out.println("LSD SortByByte Call : " + count);
     }
     
-    /* Naive Funkction for MSD */
-    public void insertSort(int l , int r) {
 
-        int target;
-        for (int i = l+1 ; i <=r ; i ++) {
-            target = data[i];
-            int j = i - 1;
-            while (j >= l && data[j] < target) {
-                int save = data[j];
-                data[j] = data[j+1];
-                data[j+1] = save;
-                j--;
-            }
-        }
-    }
     
+    /* AUFGABE - MSD Sort */
     public void msdRadix(int l, int r, int b) {
         
         /* Loop-end condition */
@@ -163,6 +165,7 @@ public class AufgabeB6A1{
             return;
         }
 
+        /* Interval is too small */
         if(r-l < 32) {
             insertSort(l,r);
             return;
@@ -175,23 +178,23 @@ public class AufgabeB6A1{
         int start = 0;
         int end = 1;
 
-        while(end < data.length) {
-            /* if is key = -1 , means not target-range of current Partition. Go to Else */
-            /* if keys[start] keys[end] same value stored, increment end Pointer 1. */
-            if(keys[start] != -1 && keys[start] == keys[end]){
+        while(end < keys.length) {
+
+            /* if keys[start] keys[end] same KEY of value stored, increment end Pointer 1. */
+            if(((keys[start] >> 8*b) & 0xFF) == ((keys[end]>> 8*b) & 0xFF)){
                 end++;
 
                 /* If the end pointer has reached the end of the data, execute the function. */
-                if(end == data.length) {
-                    msdRadix(start , end-1 , b-1);
+                if(end == keys.length) {
+                    msdRadix(l+start , l+end-1 , b-1);
                 }
 
             } else {
 
                 /* The end pointer has finally found a different value from the start. */
                 /* Now we can set our range and execute the function with a (b-1) byte sort. */
-                if (keys[start] != -1 && start != end - 1) {
-                    msdRadix(start , end-1 , b-1);
+                if (start != end - 1) {
+                    msdRadix(l+start , l+end-1 , b-1);
                 }
 
                 /* There is no matching value. Increment both start and end by 1. */
@@ -208,7 +211,10 @@ public class AufgabeB6A1{
     }
 
 
-    /* StandardInput wird eingelesen und als Rückgabe ein int[] zurückgeben */
+    /*___________________Hilfsfunktion______________________ */
+
+
+    /* StandardInput wird eingelesen und als Rueckgabe ein int[] zurueckgeben */
     public static int[] readInput() throws NumberFormatException {
     
         Scanner sc = new Scanner(System.in);
@@ -247,7 +253,7 @@ public class AufgabeB6A1{
         return result;
     }
 
-    /* Hilfsfunktion für Freq.Array */
+    /* Hilfsfunktion fuer Freq.Array */
     public int[] count(int[] d , int l , int r, int b) {
 
         int[] result = new int[256];
@@ -259,7 +265,7 @@ public class AufgabeB6A1{
         return result;
     }
 
-    /* Hilfsfunktion für Freq to Idxpostion marker */
+    /* Hilfsfunktion fuer Freq to Idxpostion marker */
     public int[] countToIdx(int[] freq) {
 
         int[] result = Arrays.copyOf(freq, freq.length);
@@ -271,7 +277,7 @@ public class AufgabeB6A1{
         return result;
     }
 
-    /* Assert für absteigene Sortierung */
+    /* Assert fuer absteigene Sortierung */
     public static boolean isSort(int[] c) {
 
         for (int i = 0 ; i < c.length-1 ; i ++) {
@@ -282,6 +288,23 @@ public class AufgabeB6A1{
         return true;
     }
 
+    /* Naive Funkction for MSD */
+    public void insertSort(int l , int r) {
+
+        int target;
+        for (int i = l+1 ; i <=r ; i ++) {
+            target = data[i];
+            int j = i - 1;
+            while (j >= l && data[j] < target) {
+                int save = data[j];
+                data[j] = data[j+1];
+                data[j+1] = save;
+                j--;
+            }
+        }
+    }
+
+    /* for compact Array print */
     public static String arrToStr(int[] p) {
 
         if (p.length > 10) {
