@@ -40,14 +40,18 @@ Fazit : Es zeigt eine lineare Zeit unabhängig von der Sortierung des Eingangs. 
 
 Time complexity :
 
-LSD-sort : Da wir genau 4 mal auf Input durchlaufen. 4(n + MAX - min) -> O(n + MAX - min)
-MSD-sort : Alle Elementen sind genau maximal 4 mal durch Countingsort gerechnet werden. d.h fuer MSD auch O(n + MAX - min).
+LSD-sort : Da wir genau 4 mal auf Input durchlaufen. 4(n + 256) -> O(n)
+MSD-sort : Alle Elementen sind genau maximal 4 mal durch Countingsort gerechnet werden. d.h fuer MSD auch O(n).
 
 Wieso MSD langsamer? : 
-1.  Weil absolut mehrer Rekursion noetig als LSD 
+1.  Weil absolut mehrer Rekursion noetig als LSD. worst case O(n + 256k), wobei k = Anzahl der Elementen,
+    die gleiche B-byte haben. 
+    (z.B Input=3200size. je 32 Elementen haben gleichen B-byte, dann 100*256 mal Counting mehr noetig.)
+
 2.  Insertsort kann zu hauefig angerufen werden (dann teilweise ist die Sortierung n^2 ausgelaufen)
+
 3.  Viele IF-ELSE-Bloecke fuehren (unabhaengig von der tatsaechlichen Anzahl der Operationen) 
-    zu einer Leistungseinbusse im Zusammenhang mit der "CPU branch prediction".
+    zu einer Leistungseinbusse im Zusammenhang mit der Branch prediction.
 */
 
 public class AufgabeB6A1{
@@ -80,7 +84,7 @@ public class AufgabeB6A1{
         AufgabeB6A1 lsd = new AufgabeB6A1(input_lsd);
         AufgabeB6A1 msd = new AufgabeB6A1(input_msd);
 
-        Instant start = Instant.now(); // Sort Start with Time measurement
+        Instant start = Instant.now(); // LSDRadix Start with Time measurement
         lsd.lsdRadix();
         Instant finish = Instant.now();
         long time = Duration.between(start, finish).toMillis();
@@ -92,7 +96,7 @@ public class AufgabeB6A1{
 
         /* AUFGABE START (MSD) */
 
-        start = Instant.now();         // Sort Start with Time measurement
+        start = Instant.now();         // MSDRadix Start with Time measurement
         msd.msdRadix();
         finish = Instant.now();
         time = Duration.between(start, finish).toMillis();
@@ -101,25 +105,22 @@ public class AufgabeB6A1{
         assert(msd_sort);
         System.out.println("MSD took : " + time+ "ms" + " | Assert : " + msd_sort);
 
-        System.out.println();
         System.out.println("Sort After LSD : " + arrToStr(lsd.data));
-        System.out.println();
         System.out.println("Sort After MSD : " + arrToStr(msd.data));
-        System.out.println();
         
     }
 
     /* Class Object */
 
     public int[] data;
-    public int count = 0;
+
     public AufgabeB6A1(int[] data) {
         this.data = data;
     }
     
     /* AUFGABE - Countingsort */
     public int[] sortByByte(int l, int r, int b) {
-        count++;
+
         int[] arrTemp = new int[r - l + 1]; 
         
 
@@ -152,7 +153,6 @@ public class AufgabeB6A1{
         for(int i = 0 ; i < 4 ; i ++) {        // b = 0 ist niederwerttigte Byte
             sortByByte(0, data.length-1, i);    
         }
-        System.out.println("LSD SortByByte Call : " + count);
     }
     
 
@@ -160,7 +160,7 @@ public class AufgabeB6A1{
     /* AUFGABE - MSD Sort */
     public void msdRadix(int l, int r, int b) {
         
-        /* Loop-end condition */
+        /* Recursion-end condition */
         if(b < 0) {
             return;
         }
@@ -197,7 +197,7 @@ public class AufgabeB6A1{
                     msdRadix(l+start , l+end-1 , b-1);
                 }
 
-                /* There is no matching value. Increment both start and end by 1. */
+                /* There is no matching value. finding start newly on end Position. */
                 start = end;
                 end = start+1;
             }
@@ -206,8 +206,9 @@ public class AufgabeB6A1{
 
     /* Initial call for MSD. */
     public void msdRadix() {
+
         msdRadix(0,  this.data.length-1, 3);
-        System.out.println("MSD SortByByte Call : " + count);
+
     }
 
 
