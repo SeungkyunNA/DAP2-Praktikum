@@ -1,16 +1,15 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 public class TestClass {
     public static void main(String[] args) {
         simpleTest();
         genTest();
+        wieHashForType();
         paramTest1();
-        paramTest2();
         collosionCount1();
         collosionCount2();
-        wieHashForType();
+        
 
 
     }
@@ -22,49 +21,84 @@ public class TestClass {
         System.out.println("⎢_______________________________________⎢"); 
         String rst = "⎢Integer(245) : ";
         System.out.print(rst);
-        for (int rp = 0 ; rp < 35-rst.length() ; rp++) {
+        for (int rp = 0 ; rp < 36-rst.length() ; rp++) {
             System.out.print(" ");
         }
         Integer i = 245;
-        System.out.println(i.hashCode() + "  |");
+        System.out.println(i.hashCode() + " |");
         System.out.println("⎢_______________________________________⎢");
 
         rst = "⎢Long(12345L) : ";
         System.out.print(rst);
-        for (int rp = 0 ; rp < 35-rst.length() ; rp++) {
+        for (int rp = 0 ; rp < 34-rst.length() ; rp++) {
             System.out.print(" ");
         }
         Long l = 12345L;
-        System.out.println(l.hashCode() + "|");
+        System.out.println(l.hashCode() + " |");
         System.out.println("⎢_______________________________________⎢"); 
 
         rst = "⎢Double(0.12) : ";
         System.out.print(rst);
-        for (int rp = 0 ; rp < 30-rst.length() ; rp++) {
+        for (int rp = 0 ; rp < 29-rst.length() ; rp++) {
             System.out.print(" ");
         }
         Double d = 0.12;
-        System.out.println(d.hashCode() + "|");
+        System.out.println(d.hashCode() + " |");
         System.out.println("⎢_______________________________________⎢"); 
 
-        rst = "⎢Booleans TRUE : ";
+        rst = "⎢Booleans TRUE(1) : ";
         System.out.print(rst);
         for (int rp = 0 ; rp < 35-rst.length() ; rp++) {
             System.out.print(" ");
         }
         Boolean t = true;
         System.out.println(t.hashCode() + " |");
-        System.out.println("⎢_______________________________________⎢"); 
-        rst = "⎢Booleans False : ";
+        rst = "⎢Booleans TRUE(2) : ";
         System.out.print(rst);
         for (int rp = 0 ; rp < 35-rst.length() ; rp++) {
             System.out.print(" ");
         }
-        Boolean f = false;
-        System.out.println(f.hashCode() + " |");
+        t = true;
+        System.out.println(t.hashCode() + " |");
+        rst = "⎢Booleans TRUE(3) : ";
+        System.out.print(rst);
+        for (int rp = 0 ; rp < 35-rst.length() ; rp++) {
+            System.out.print(" ");
+        }
+        t = true;
+        System.out.println(t.hashCode() + " |");
         System.out.println("⎢_______________________________________⎢"); 
-
-
+        rst = "⎢Booleans False(1) : ";
+        System.out.print(rst);
+        for (int rp = 0 ; rp < 35-rst.length() ; rp++) {
+            System.out.print(" ");
+        }
+        Boolean f1 = false;
+        System.out.println(f1.hashCode() + " |");
+        rst = "⎢Booleans False(2) : ";
+        System.out.print(rst);
+        for (int rp = 0 ; rp < 35-rst.length() ; rp++) {
+            System.out.print(" ");
+        }
+        Boolean f2 = false;
+        System.out.println(f2.hashCode() + " |");
+        rst = "⎢Booleans False(3) : ";
+        System.out.print(rst);
+        for (int rp = 0 ; rp < 35-rst.length() ; rp++) {
+            System.out.print(" ");
+        }
+        Boolean f3 = false;
+        System.out.println(f3.hashCode() + " |");
+        System.out.println("⎢_______________________________________⎢"); 
+        System.out.println();
+        System.out.println("Antwort : Ähnlich wie oben können wir feststellen, dass bei primitiven Klassen der Wert direkt");
+        System.out.println("als Hashcode verwendet wird (Int, Long), ohne eine spezielle Umwandlung. Der Hashcode für das Double-Objekt");
+        System.out.println("entspricht der Bitdarstellung des double-Werts als long, der dann als Hashcode verwendet wird.");
+        System.out.println("Für Boolean ist auch immer selbe hashcode (True = 1231 , False = 1237) unabhängig von Variabel, Objekte");
+        System.out.println();
+        System.out.println("Das bedeutet, dass es ähnlich ist wie SimpleHT, das direkt als Schlüssel ohne Hash-Funktion verwendet wird.");
+        System.out.println("Um dieses Problem zu lösen, müssen wir eine andere Hash-Funktion verwenden.");
+        System.out.println();
     }
 
     private static void simpleTest() {
@@ -173,7 +207,7 @@ public class TestClass {
     private static void paramTest1() {
         System.out.println("________________________________________"); 
         System.out.println("⎢          AUFGABE 8.3 ParamHT          ⎢"); 
-        System.out.println("⎢          Hashtable size < 31          ⎢"); 
+        System.out.println("⎢ Hashfunktion = Multiflikationsmethode ⎢"); 
         System.out.println("⎢_______________________________________⎢"); 
 
         /* Class erstellen. Es gibt die Schlüsselmenge größe 14.  */
@@ -225,68 +259,11 @@ public class TestClass {
         System.out.println("⎢_______________________________________⎢"); 
     }
 
-    private static void paramTest2() {
-        System.out.println("________________________________________"); 
-        System.out.println("⎢          AUFGABE 8.3 ParamHT          ⎢"); 
-        System.out.println("⎢          Hashtable size > 31          ⎢"); 
-        System.out.println("⎢_______________________________________⎢"); 
-
-
-
-        /* Class erstellen. Es gibt die Schlüsselmenge größe 14.  */
-        
-        HashFunction<String> hf = new HashFunction<String>();
-        ParamHT<String , Boolean> s = new ParamHT<String , Boolean>(102, hf);
-        resultPrint(1, true);
-
-        /* Erwartet : Es wird String als KEY, Boolean(GradeZahl : True) als Value geschpeichert */
-        for (int i = -10000 ; i < 10000 ; i++) {
-            String k = "KEY" + i;
-            boolean v = (i%2 == 0);
-            s.insert(k, v);
-        }
-        /* Test für Insert */
-        boolean flag = true;
-        for (int i = -10000 ; i < 10000 ; i++) {
-            boolean tempB = i%2 == 0;
-            if(s.get("KEY"+i) != tempB) {
-                flag = false;
-            }
-        }
-        resultPrint(2, flag);
-
-
-        /* Erwartet : Alle Wert werden Boolean(Ungeradezahl : True).(Überschreiben)) */
-        for (int i = -10000 ; i < 10000 ; i++) {
-            boolean tempB = i%2 == 0;
-            s.insert("KEY"+i, !tempB); // reversed Result (Ungeradezahl : True)
-        }
-
-        flag = true;
-        /* Test für Insert (Überschreiben) */
-        for (int i = -10000 ; i < 10000 ; i++) {
-            if(s.get("KEY"+i) != (i%2 != 0)) {
-                flag = false;
-            }
-        }
-        resultPrint(3, flag);
-
-        /* Test für Remove */
-        flag = s.remove("KEY"+1);        // Erwartet : TRUE, weil Key(1) existieren muss.
-        resultPrint(4,flag);
-        flag = (s.get("KEY"+1) == null);   // Erwartet : null, weil Key(1) schon gelöscht werden muss.
-        resultPrint(5,flag);
-        flag = !s.remove("KEY"+1);       // Erwartet : FALSE, weil Key(1) schon gelöscht werden muss.
-        resultPrint(6, flag);
-        
-        System.out.println("⎢_______________________________________⎢"); 
-    }
-
     private static void collosionCount1() {
         System.out.println("________________________________________"); 
         System.out.println("⎢            Collosion TEST1            ⎢"); 
-        System.out.println("⎢            Input : 20,000 Paar        ⎢"); 
-        System.out.println("⎢           (RandomNR 1 ~ 20,000)       ⎢"); 
+        System.out.println("⎢          Input : 20,000 Paar          ⎢"); 
+        System.out.println("⎢         (RandomNR 1 ~ 20,000)         ⎢"); 
         System.out.println("⎢_______________________________________⎢"); 
 
         SimpleHT s = new SimpleHT(32);
@@ -337,7 +314,7 @@ public class TestClass {
             i++;
         } 
 
-        rst = "⎢GenHT  Deviation : ";
+        rst = "⎢GenHT     Deviation : ";
         System.out.print(rst);
         for (int rp = 0 ; rp < 35-rst.length() ; rp++) {
             System.out.print(" ");
@@ -359,7 +336,7 @@ public class TestClass {
             i++;
         } 
 
-        rst = "⎢ParamHT Deviation : ";
+        rst = "⎢ParamHT   Deviation : ";
         System.out.print(rst);
         for (int rp = 0 ; rp < 35-rst.length() ; rp++) {
             System.out.print(" ");
@@ -380,8 +357,9 @@ public class TestClass {
 
         System.out.println("________________________________________"); 
         System.out.println("⎢            Collosion TEST2            ⎢"); 
-        System.out.println("⎢            Input : 20,000 Paar        ⎢"); 
-        System.out.println("⎢           (Input ist alle 13*k)       ⎢"); 
+        System.out.println("⎢          Input    : 20,000 Paar       ⎢"); 
+        System.out.println("⎢          Capacity : 26                ⎢"); 
+        System.out.println("⎢  Als Key wird 13*k (k aus Z) gegeben  ⎢"); 
         System.out.println("⎢_______________________________________⎢"); 
 
         SimpleHT s = new SimpleHT(26);
@@ -433,7 +411,7 @@ public class TestClass {
             i++;
         } 
 
-        rst = "⎢GenHT  Deviation : ";
+        rst = "⎢GenHT     Deviation : ";
         System.out.print(rst);
         for (int rp = 0 ; rp < 35-rst.length() ; rp++) {
             System.out.print(" ");
@@ -456,7 +434,7 @@ public class TestClass {
             i++;
         } 
 
-        rst = "⎢ParamHT Deviation : ";
+        rst = "⎢ParamHT   Deviation : ";
         System.out.print(rst);
         for (int rp = 0 ; rp < 35-rst.length() ; rp++) {
             System.out.print(" ");
