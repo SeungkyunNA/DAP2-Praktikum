@@ -3,42 +3,47 @@ import java.util.ArrayList;
 public class SimpleHT{
 
     public int size;
-    public ArrayList<ArrayList<Pair<Integer,Integer>>> data;
+    public ArrayList<ArrayList<Pair>> data;
 
     public SimpleHT(int capacity) {
         /*  Fehlerbehandlung, Kapazität muss großer als 1 sein, 
             k = 0 oder negative Zahl macht kein Sinn             */
         if (capacity < 2) {
-            throw new IllegalArgumentException("Hash-Capacity must be > 1");
+            capacity=1;
         }
 
         /* Init für Data und Kapazität  */
-        data = new ArrayList<ArrayList<Pair<Integer,Integer>>>();
-        this.size = capacity;
-        for (int i = 0 ; i < size ; i++) {
-            ArrayList<Pair<Integer,Integer>> p = new ArrayList<Pair<Integer,Integer>>();
+        data = new ArrayList<ArrayList<Pair>>();
+        this.size = 0;
+        for (int i = 0 ; i < capacity ; i++) {
+            ArrayList<Pair> p = new ArrayList<Pair>();
             data.add(p);
         }
 
     }
+
+    public class Pair{
+        Integer key;
+        Integer value;
+        }
     
     /* Einfache Hashfunktion. es wird für negative Zahl auch ein "Positive modulo" ergeben. */
     public int addressOf(Integer key) {
-        return ((key % size) + size) % size;
+        return ((key % data.size()) + data.size()) % data.size();
     }
 
     /* ___________________Hash-Methode-Implement___________________ */
 
     /* SimpleHT : Insert. */
     public void insert(Integer key, Integer value) {
-        Pair<Integer,Integer> newPair = new Pair<Integer,Integer>();
+        Pair newPair = new Pair();
         newPair.key = key;
         newPair.value = value;
 
-        ArrayList<Pair<Integer,Integer>> list = data.get(addressOf(key));
+        ArrayList<Pair> list = data.get(addressOf(key));
 
         boolean keyAleadyExist = false; // Ist KEY schon vorhanden? 
-        for (Pair<Integer,Integer> p : list) {
+        for (Pair p : list) {
             if (p.key.equals(key)) {
                 p.value = value; // Überschreiben
                 keyAleadyExist = true;
@@ -47,19 +52,20 @@ public class SimpleHT{
 
         if (!keyAleadyExist) { // KEY gibt es in DATA nicht. fügen wir ein neues Paar.
             list.add(newPair);
+            size++;
         }
         
 
     }
     /* SimpleHT : Get */
     public Integer get(Integer key) {
-        ArrayList<Pair<Integer,Integer>> temp = data.get(addressOf(key));
+        ArrayList<Pair> temp = data.get(addressOf(key));
         
         if (temp.size() == 0) { // Falls kein Element in List exsistiert
             return null;
         }
 
-        for (Pair<Integer,Integer> p : temp) {
+        for (Pair p : temp) {
             if (p.key.equals(key)) { // Suche in verkettete List das Ziel-Pair
                 return p.value;
             }
@@ -71,11 +77,12 @@ public class SimpleHT{
     /* SimpleHT : Remove */
     public boolean remove(Integer key) {
 
-        ArrayList<Pair<Integer,Integer>> list = data.get(addressOf(key));
+        ArrayList<Pair> list = data.get(addressOf(key));
 
         for (int i = 0 ; i < list.size() ; i++) {
             if (list.get(i).key.equals(key)) { // Suche in verkettete List das Ziel-Pair
                 list.remove(i);
+                size--;
                 return true; 
             }
         }

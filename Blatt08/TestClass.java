@@ -286,7 +286,7 @@ public class TestClass {
         /* TEST Simple */
         int[] setOfListsize = new int[32];
         int i = 0;
-        for (ArrayList<Pair<Integer,Integer>> s_List : s.data) {
+        for (ArrayList<SimpleHT.Pair> s_List : s.data) {
             setOfListsize[i] = s_List.size();
             i++;
         } 
@@ -309,7 +309,7 @@ public class TestClass {
         /* TEST Gen */
         setOfListsize = new int[32];
         i = 0;
-        for (ArrayList<Pair<Integer,Integer>> g_List : g.data) {
+        for (ArrayList<GenHT<Integer, Integer>.Pair<Integer, Integer>> g_List : g.data) {
             setOfListsize[i] = g_List.size();
             i++;
         } 
@@ -331,7 +331,7 @@ public class TestClass {
         /* TEST Param mit Mul.Methode */
         setOfListsize = new int[32];
         i = 0;
-        for (ArrayList<Pair<String,Integer>> p_List : p.data) {
+        for (ArrayList<ParamHT<String, Integer>.Pair<String, Integer>> p_List : p.data) {
             setOfListsize[i] = p_List.size();
             i++;
         } 
@@ -382,7 +382,7 @@ public class TestClass {
         /* TEST Simple */
         int[] setOfListsize = new int[26];
         int i = 0;
-        for (ArrayList<Pair<Integer,Integer>> s_List : s.data) {
+        for (ArrayList<SimpleHT.Pair> s_List : s.data) {
             setOfListsize[i] = s_List.size();
             i++;
         } 
@@ -406,7 +406,7 @@ public class TestClass {
         /* TEST Gen */
         setOfListsize = new int[26];
         i = 0;
-        for (ArrayList<Pair<Integer,Integer>> g_List : g.data) {
+        for (ArrayList<GenHT<Integer, Integer>.Pair<Integer, Integer>> g_List : g.data) {
             setOfListsize[i] = g_List.size();
             i++;
         } 
@@ -429,7 +429,7 @@ public class TestClass {
         /* TEST Param mit Mul.Methode */
         setOfListsize = new int[26];
         i = 0;
-        for (ArrayList<Pair<String,Integer>> p_List : p.data) {
+        for (ArrayList<ParamHT<String, Integer>.Pair<String, Integer>> p_List : p.data) {
             setOfListsize[i] = p_List.size();
             i++;
         } 

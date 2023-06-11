@@ -1,0 +1,9 @@
+# This defines a graph with 3 nodes.
+d 3
+# This defines the edges between graphs.
+e 0 1
+e 0 2
+# Empty lines are allowed and
+# should be skipped.
+e 1 2
+e 2 1

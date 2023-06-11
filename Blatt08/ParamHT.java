@@ -9,17 +9,22 @@ public class ParamHT<K, V> {
         /*  Fehlerbehandlung, Kapazität muss großer als 1 sein, 
             k = 0 oder negative Zahl macht kein Sinn             */
         if (capacity < 2) {
-            throw new IllegalArgumentException("Hash-Capacity must be > 1");
+            capacity=1;
         }
 
         /* Init für Data und Kapazität  */
         data = new ArrayList<ArrayList<Pair<K,V>>>();
-        this.size = capacity;
-        for (int i = 0 ; i < size ; i++) {
+        this.size = 0;
+        for (int i = 0 ; i < capacity ; i++) {
             ArrayList<Pair<K,V>> p = new ArrayList<Pair<K,V>>();
             data.add(p);
         }
     }
+
+    public class Pair<K, V>{
+        K key;
+        V value;
+        }
 
 
     public ParamHT(int capacity, SimpleHashFunction<K> hashFunction) {
@@ -30,13 +35,13 @@ public class ParamHT<K, V> {
         /*  Fehlerbehandlung, Kapazität muss großer als 1 sein, 
             k = 0 oder negative Zahl macht kein Sinn             */
         if (capacity < 2) {
-            throw new IllegalArgumentException("Hash-Capacity must be > 1");
+            capacity=1;
         }
 
         /* Init für Data und Kapazität  */
         data = new ArrayList<ArrayList<Pair<K,V>>>();
-        this.size = capacity;
-        for (int i = 0 ; i < size ; i++) {
+        this.size = 0;
+        for (int i = 0 ; i < capacity ; i++) {
             ArrayList<Pair<K,V>> p = new ArrayList<Pair<K,V>>();
             data.add(p);
         }
@@ -48,13 +53,13 @@ public class ParamHT<K, V> {
         /* Ob dies Class mit oder ohne (Externe) Hashfunktion? */
 
         if (hashFunction == null){ // Ohne (Externe) Hashfunktion
-            return ((key.hashCode() % size) + size) % size;
+            return ((key.hashCode() % data.size()) + data.size()) % data.size();
         } 
 
-        int code = hashFunction.getHash(key, size); // Mit (Externe) Hashfunktion
+        int code = hashFunction.getHash(key, data.size()); // Mit (Externe) Hashfunktion
         
         /* Fehlerbehandlung, Falls Hashfunktion äußere Index zurückgegeben */
-        if (code >= size) {
+        if (code >= data.size()) {
             throw new IndexOutOfBoundsException();
         } else {
             return code;
@@ -83,6 +88,7 @@ public class ParamHT<K, V> {
 
         if (!keyAleadyExist) { // KEY gibt es in DATA nicht. fügen wir ein neues Paar.
             list.add(newPair);
+            size++;
         }
 
     }
@@ -111,6 +117,7 @@ public class ParamHT<K, V> {
         for (int i = 0 ; i < list.size() ; i++) {
             if (list.get(i).key.equals(key)) { // Suche in verkettete List das Ziel-Pair
                 list.remove(i);
+                size--;
                 return true;
             }
         }
